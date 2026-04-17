@@ -5,6 +5,7 @@ import AuthLayout from '@/modules/auth/layouts/AuthLayout.vue'
 export const authRoutes: RouteRecordRaw[] = [
   {
     path: '',
+    name: routeNames.auth.layout,
     component: AuthLayout,
     redirect: () => {
       return { name: routeNames.auth.signIn }

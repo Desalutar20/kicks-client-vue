@@ -8,9 +8,11 @@ import { PiniaColada, PiniaColadaQueryHooksPlugin } from '@pinia/colada'
 import { createToastflow } from 'vue-toastflow'
 import { handleApiError } from '@/core/utils/handle-api-error.util.ts'
 import { QUERY_KEYS } from '@/core/const/query-keys.const.ts'
+import PrimeVue from 'primevue/config'
 
 const app = createApp(App)
 
+app.use(PrimeVue)
 app.use(
   createToastflow({
     position: 'top-right',

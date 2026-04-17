@@ -4,7 +4,10 @@ import { toast } from 'vue-toastflow'
 import type { ZodType } from 'zod'
 import { z } from 'zod'
 
-export const useParseQuery = <T extends ZodType>(schema: T, error = 'Invalid query') => {
+export const useParseQuery = <T extends ZodType>(
+  schema: T,
+  { error = 'Invalid query', invalidCallback }: { error?: string; invalidCallback?: () => void },
+) => {
   const route = useRoute()
 
   const parsed = computed(() => schema.safeParse(route.query))
@@ -14,6 +17,8 @@ export const useParseQuery = <T extends ZodType>(schema: T, error = 'Invalid que
     (isValid) => {
       if (!isValid) {
         toast.error(error)
+
+        invalidCallback?.()
       }
     },
     { immediate: true },

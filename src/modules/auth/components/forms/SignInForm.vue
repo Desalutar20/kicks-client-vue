@@ -8,13 +8,19 @@ import OAuthButtons from '@/modules/auth/components/OAuthButtons.vue'
 import TermsText from '@/modules/auth/components/TermsText.vue'
 import Spinner from '@/core/components/ui/Spinner.vue'
 import { routeNames } from '@/core/const/router.const.ts'
+import { useRouter } from 'vue-router'
+import { UserRole } from '@/core/types/user.type.ts'
 
 const { redirectPath } = defineProps<{ redirectPath?: string }>()
+const router = useRouter()
 
 const {
   r$,
   mutation: { mutateAsync, asyncStatus },
-} = useSignIn()
+} = useSignIn({
+  onSuccess: ({ data: user }) =>
+    router.push({ name: user.role === UserRole.Admin ? routeNames.admin.root : routeNames.home }),
+})
 
 const onSubmit = async (e: SubmitEvent) => {
   e.preventDefault()

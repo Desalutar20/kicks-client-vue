@@ -7,8 +7,8 @@ export type User = {
 }
 
 export enum UserRole {
-  Admin = 'admin',
-  Regular = 'regular',
+  Admin = 'Admin',
+  Regular = 'Regular',
 }
 
 export enum UserGender {

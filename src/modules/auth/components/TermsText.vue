@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 const { type } = defineProps<{ type: 'signUp' | 'signIn' }>()
 </script>
 

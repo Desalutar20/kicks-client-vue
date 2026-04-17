@@ -17,11 +17,13 @@
   "dependencies": {
     "@lucide/vue": "^1.8.0",
     "@pinia/colada": "^1.1.0",
+    "@primeuix/themes": "^2.0.3",
     "@regle/core": "^1.22.7",
     "@regle/rules": "^1.22.7",
     "@regle/schemas": "^1.22.7",
     "ky": "^2.0.1",
     "pinia": "^3.0.4",
+    "primevue": "^4.5.5",
     "vue": "^3.5.31",
     "vue-router": "^5.0.4",
     "vue-toastflow": "^1.1.8",
