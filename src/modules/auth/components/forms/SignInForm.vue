@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { EMAIL_MAX_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from '@/modules/auth/const/auth-schemas.const.ts'
+import {
+  EMAIL_MAX_LENGTH,
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+} from '@/modules/auth/const/auth-schemas.const.ts'
 import AppButton from '@/core/components/ui/AppButton.vue'
 import { ArrowRight } from '@lucide/vue'
 import FormInput from '@/core/components/ui/FormInput.vue'
@@ -7,26 +11,33 @@ import { useSignIn } from '@/modules/auth/composables/use-sign-in.ts'
 import OAuthButtons from '@/modules/auth/components/OAuthButtons.vue'
 import TermsText from '@/modules/auth/components/TermsText.vue'
 import Spinner from '@/core/components/ui/Spinner.vue'
-import { routeNames } from '@/core/const/router.const.ts'
-import { useRouter } from 'vue-router'
-import { UserRole } from '@/core/types/user.type.ts'
+import { ROUTE_NAMES } from '@/core/const/router.const.ts'
+import { type RouteLocationRaw, useRouter } from 'vue-router'
+import { UserRole } from '@/core/types/api/user.type'
 
 const { redirectPath } = defineProps<{ redirectPath?: string }>()
 const router = useRouter()
 
 const {
   r$,
-  mutation: { mutateAsync, asyncStatus },
+  mutation: { mutate, isPending },
 } = useSignIn({
-  onSuccess: ({ data: user }) =>
-    router.push({ name: user.role === UserRole.Admin ? routeNames.admin.root : routeNames.home }),
+  onSuccess: ({ data: user }) => {
+    const location: RouteLocationRaw = redirectPath
+      ? {
+          path: redirectPath,
+        }
+      : {
+          name: user.role === UserRole.Admin ? ROUTE_NAMES.admin.root : ROUTE_NAMES.home,
+        }
+
+    router.push(location)
+  },
 })
 
-const onSubmit = async (e: SubmitEvent) => {
-  e.preventDefault()
+const onSubmit = () => {
   if (!r$.$correct) return
-
-  await mutateAsync(r$.$value)
+  mutate(r$.$value)
 }
 </script>
 
@@ -34,12 +45,12 @@ const onSubmit = async (e: SubmitEvent) => {
   <div :class="$style.container">
     <h1 :class="$style.title">Login</h1>
     <div :class="$style.innerContainer">
-      <RouterLink :to="`${routeNames.auth.forgotPassword}`" :class="$style.description"
+      <RouterLink :to="`${ROUTE_NAMES.auth.forgotPassword}`" :class="$style.description"
         >Forgot your password?</RouterLink
       >
 
-      <form :class="$style.form" @submit="onSubmit">
-        <fieldset :disabled="asyncStatus === 'loading'" :class="$style.fieldset">
+      <form :class="$style.form" @submit.prevent="onSubmit">
+        <fieldset :disabled="isPending" :class="$style.fieldset">
           <div :class="$style.inputContainer">
             <FormInput
               placeholder="Email"
@@ -62,11 +73,11 @@ const onSubmit = async (e: SubmitEvent) => {
             </div>
           </div>
 
-          <AppButton :disabled="!r$.$correct || asyncStatus == 'loading'"
+          <AppButton :disabled="!r$.$correct || isPending"
             >Email login
             <template #icon>
-              <ArrowRight v-if="asyncStatus === 'idle'" :size="20" />
-              <Spinner v-else variant="secondary" />
+              <Spinner v-if="isPending" variant="secondary" />
+              <ArrowRight v-else :size="20" />
             </template>
           </AppButton>
         </fieldset>

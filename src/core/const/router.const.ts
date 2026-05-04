@@ -1,4 +1,4 @@
-export const routeNames = {
+export const ROUTE_NAMES = {
   home: 'home',
   auth: {
     layout: 'auth-layout',
@@ -10,7 +10,10 @@ export const routeNames = {
   },
   admin: {
     root: 'admin-root',
+    users: 'users',
+    brands: 'brands',
+    categories: 'categories',
   },
-  shoppingCart: '/cart',
-  profile: '/profile',
+  shoppingCart: 'cart',
+  profile: 'profile',
 } as const

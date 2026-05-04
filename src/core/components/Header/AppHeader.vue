@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import HeaderLeft from '@/core/components/Header/HeaderLeft.vue'
-import { routeNames } from '@/core/const/router.const.ts'
-import logoIcon from '@/core/assets/icons/logo.svg'
 import { SearchIcon, ShoppingCart, UserRound } from '@lucide/vue'
+import logoIcon from '@/core/assets/icons/logo.svg'
 import { useGetProfile } from '@/core/composables/use-get-profile.ts'
+import { ROUTE_NAMES } from '@/core/const/router.const.ts'
 
 const { user } = useGetProfile()
 </script>
@@ -11,7 +11,7 @@ const { user } = useGetProfile()
 <template>
   <header :class="$style.header">
     <HeaderLeft />
-    <RouterLink :to="{ name: routeNames.home }">
+    <RouterLink :to="{ name: ROUTE_NAMES.home }">
       <img :src="logoIcon" alt="Kicks" :class="$style.logo" />
     </RouterLink>
 
@@ -19,14 +19,14 @@ const { user } = useGetProfile()
       <SearchIcon :class="$style.search" />
       <RouterLink
         :class="$style.shoppingCart"
-        :to="{ name: user ? routeNames.shoppingCart : routeNames.auth.signIn }"
+        :to="{ name: user ? ROUTE_NAMES.shoppingCart : ROUTE_NAMES.auth.signIn }"
       >
         <ShoppingCart style="width: 100%; stroke: oklch(55.4% 0.046 257.417)" />
         <span>0</span>
       </RouterLink>
       <RouterLink
         :class="$style.shoppingCart"
-        :to="{ name: user ? routeNames.profile : routeNames.auth.signIn }"
+        :to="{ name: user ? ROUTE_NAMES.profile : ROUTE_NAMES.auth.signIn }"
       >
         <UserRound style="width: 100%; fill: var(--dark-gray); stroke: var(--dark-gray)" />
       </RouterLink>
@@ -59,8 +59,10 @@ const { user } = useGetProfile()
 
   span {
     position: absolute;
+    width: 16px;
+    height: 16px;
     top: -6px;
-    right: -4px;
+    right: -6px;
     display: flex;
     align-items: center;
     justify-content: center;

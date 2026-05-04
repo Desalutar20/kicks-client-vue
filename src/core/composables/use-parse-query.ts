@@ -1,30 +1,42 @@
 import { useRoute } from 'vue-router'
-import { computed, watch } from 'vue'
+import { reactive, watch } from 'vue'
 import { toast } from 'vue-toastflow'
-import type { ZodType } from 'zod'
+import type { ZodObject, ZodRawShape } from 'zod'
 import { z } from 'zod'
 
-export const useParseQuery = <T extends ZodType>(
+export const useParseQuery = <T extends ZodObject<ZodRawShape>>(
   schema: T,
-  { error = 'Invalid query', invalidCallback }: { error?: string; invalidCallback?: () => void },
+  {
+    error = 'Invalid query',
+    onError,
+    onSuccess,
+  }: { error?: string; onError?: () => void; onSuccess?: (data: z.infer<T>) => void },
 ) => {
   const route = useRoute()
-
-  const parsed = computed(() => schema.safeParse(route.query))
+  const parsed: Partial<z.infer<T>> = reactive({})
 
   watch(
-    () => parsed.value.success,
-    (isValid) => {
-      if (!isValid) {
-        toast.error(error)
+    () => route.query,
+    (query) => {
+      const result = schema.safeParse(query)
 
-        invalidCallback?.()
+      if (!result.success) {
+        toast.error(error)
+        return onError?.()
       }
+
+      onSuccess?.(result.data)
+
+      for (const key in parsed) {
+        if (!Object.hasOwn(parsed, key)) continue
+
+        delete parsed[key]
+      }
+
+      Object.assign(parsed, result.data)
     },
     { immediate: true },
   )
 
-  return computed<z.infer<T> | null>(() => {
-    return parsed.value.success ? parsed.value.data : null
-  })
+  return parsed
 }

@@ -8,7 +8,7 @@ import {
   PASSWORD_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
 } from '@/modules/auth/const/auth-schemas.const.ts'
-import { UserGender } from '@/core/types/user.type.ts'
+import { UserGender } from '@/core/types/api/user.type'
 import AppButton from '@/core/components/ui/AppButton.vue'
 import { ArrowRight } from '@lucide/vue'
 import FormInput from '@/core/components/ui/FormInput.vue'
@@ -18,14 +18,12 @@ import Spinner from '@/core/components/ui/Spinner.vue'
 
 const {
   r$,
-  mutation: { mutateAsync, asyncStatus },
+  mutation: { mutate, isPending },
 } = useSignUp()
 
-const onSubmit = async (e: SubmitEvent) => {
-  e.preventDefault()
+const onSubmit = () => {
   if (!r$.$correct) return
-
-  await mutateAsync(r$.$value)
+  mutate(r$.$value)
 }
 </script>
 
@@ -38,8 +36,8 @@ const onSubmit = async (e: SubmitEvent) => {
 
       <OAuthButtons />
 
-      <form @submit="onSubmit">
-        <fieldset :disabled="asyncStatus === 'loading'" :class="$style.fieldset">
+      <form @submit.prevent="onSubmit">
+        <fieldset :disabled="isPending" :class="$style.fieldset">
           <span :class="$style.or">or</span>
 
           <div :class="$style.inputContainer">
@@ -120,11 +118,11 @@ const onSubmit = async (e: SubmitEvent) => {
             </label>
           </div>
 
-          <AppButton :disabled="!r$.$correct || asyncStatus == 'loading'">
+          <AppButton :disabled="!r$.$correct || isPending">
             Register
             <template #icon>
-              <ArrowRight v-if="asyncStatus === 'idle'" :size="20" />
-              <Spinner v-else variant="secondary" />
+              <Spinner v-if="isPending" variant="secondary" />
+              <ArrowRight v-else :size="20" />
             </template>
           </AppButton>
         </fieldset>

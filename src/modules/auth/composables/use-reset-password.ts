@@ -1,5 +1,4 @@
 import { useRegleSchema } from '@regle/schemas'
-import { useMutation } from '@pinia/colada'
 import { setExternalErrors } from '@/core/utils/set-external-errors.util.ts'
 import { resetPassword } from '@/modules/auth/api/auth.api.ts'
 import {
@@ -7,8 +6,9 @@ import {
   resetPasswordSchema,
 } from '@/modules/auth/schemas/reset-password.schema.ts'
 import { toast } from 'vue-toastflow'
-import type { MutationOptions } from '@/core/types/pinia.type.ts'
-import type { ApiSuccessResponse } from '@/core/api/api.ts'
+import type { ApiSuccessResponse } from '@/core/lib/api.lib.ts'
+import type { MutationOptions } from '@/core/types/tanstack.type.ts'
+import { useMutation } from '@tanstack/vue-query'
 
 export const useResetPassword = (
   data: Pick<ResetPasswordInput, 'token' | 'email'>,
@@ -28,16 +28,14 @@ export const useResetPassword = (
     r$,
     mutation: useMutation({
       ...options,
-      mutation: (data: ResetPasswordInput) => resetPassword(data),
-      onSuccess: (data, vars, ctx) => {
-        toast.success('Success', {
-          description: 'Your password has been updated. You can now log in with the new one',
-        })
-        options?.onSuccess?.(data, vars, ctx)
+      mutationFn: (data: ResetPasswordInput) => resetPassword(data),
+      onSuccess: (data, params, result, ctx) => {
+        toast.success('Your password has been updated. You can now log in with the new one')
+        options?.onSuccess?.(data, params, result, ctx)
       },
-      onError: (error, vars, ctx) => {
+      onError: (error, params, result, ctx) => {
         setExternalErrors(error, r$)
-        options?.onError?.(error, vars, ctx)
+        options?.onError?.(error, params, result, ctx)
       },
     }),
   }

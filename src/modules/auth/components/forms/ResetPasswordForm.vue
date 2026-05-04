@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import FormInput from '@/core/components/ui/FormInput.vue'
-import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from '@/modules/auth/const/auth-schemas.const.ts'
+import {
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+} from '@/modules/auth/const/auth-schemas.const.ts'
 import { ArrowRight } from '@lucide/vue'
 import Spinner from '@/core/components/ui/Spinner.vue'
 import AppButton from '@/core/components/ui/AppButton.vue'
@@ -13,21 +16,19 @@ const { data } = defineProps<{
 
 const {
   r$,
-  mutation: { mutateAsync, asyncStatus },
+  mutation: { mutate, isPending },
 } = useResetPassword(data)
 
-const onSubmit = async (e: SubmitEvent) => {
-  e.preventDefault()
-
+const onSubmit = async () => {
   const isValid = await r$.$validate()
   if (!isValid) return
 
-  await mutateAsync(r$.$value)
+  mutate(r$.$value)
 }
 </script>
 
 <template>
-  <form @submit="onSubmit" :class="$style.form">
+  <form @submit.prevent="onSubmit" :class="$style.form">
     <h1 :class="$style.title">Reset Password</h1>
     <p :class="$style.text">Enter your new password to complete the reset process.</p>
 
@@ -51,11 +52,11 @@ const onSubmit = async (e: SubmitEvent) => {
       :class="$style.input"
     />
 
-    <AppButton :disabled="r$.$invalid || asyncStatus == 'loading'"
+    <AppButton :disabled="r$.$invalid || isPending"
       >Reset password
       <template #icon>
-        <ArrowRight v-if="asyncStatus === 'idle'" :size="20" />
-        <Spinner v-else variant="secondary" />
+        <Spinner v-if="isPending" variant="secondary" />
+        <ArrowRight v-else :size="20" />
       </template>
     </AppButton>
   </form>

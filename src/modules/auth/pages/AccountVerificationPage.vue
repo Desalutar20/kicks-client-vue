@@ -3,7 +3,9 @@ import { verifyAccountSchema } from '@/modules/auth/schemas/verify-account.schem
 import AccountVerification from '@/modules/auth/components/AccountVerification.vue'
 import { useParseQuery } from '@/core/composables/use-parse-query.ts'
 
-const parsed = useParseQuery(verifyAccountSchema, 'Invalid account verification link')
+const parsed = useParseQuery(verifyAccountSchema, {
+  error: 'Invalid account verification link',
+})
 </script>
 
 <template>

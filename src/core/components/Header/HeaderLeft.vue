@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { routeNames } from '@/core/const/router.const.ts'
 import { Flame } from '@lucide/vue'
 import { ref } from 'vue'
 import { Select } from 'primevue'
+import { ROUTE_NAMES } from '@/core/const/router.const.ts'
 
 //TODO
 const cities = ref([
@@ -16,7 +16,7 @@ const cities = ref([
 
 <template>
   <div :class="$style.left">
-    <RouterLink :class="$style.link" :to="{ name: routeNames.home }">
+    <RouterLink :class="$style.link" :to="{ name: ROUTE_NAMES.home }">
       <span>New Drops</span>
       <Flame
         :size="20"

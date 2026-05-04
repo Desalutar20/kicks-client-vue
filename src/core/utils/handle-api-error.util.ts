@@ -1,5 +1,5 @@
 import { isHTTPError } from 'ky'
-import { type ApiErrorResponse, isApiError } from '@/core/api/api.ts'
+import { type ApiErrorResponse, isApiError } from '@/core/lib/api.lib.ts'
 import { toast } from 'vue-toastflow'
 
 export const handleApiError = (error: unknown, disabled?: (err: ApiErrorResponse) => boolean) => {

@@ -1,8 +1,15 @@
 import ky from 'ky'
 import { config } from '@/config.ts'
+import type { Nullable } from '@/core/types/util.type'
 
 export type ApiSuccessResponse<T> = {
   data: T
+}
+
+export type ApiKeysetResponse<T> = {
+  data: T[]
+  prevCursor: Nullable<string>
+  nextCursor: Nullable<string>
 }
 
 export type ApiErrorResponse<ErrorKeys extends string[] = []> = {
@@ -22,7 +29,7 @@ export const http = ky.create({
   baseUrl: config.apiUrl,
   prefix: config.apiPrefix,
   retry: {
-    retryOnTimeout: true,
+    limit: 0,
   },
   credentials: 'include',
 })

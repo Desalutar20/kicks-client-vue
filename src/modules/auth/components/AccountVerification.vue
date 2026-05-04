@@ -3,7 +3,7 @@ import { useVerifyAccount } from '@/modules/auth/composables/use-verify-account.
 import Spinner from '@/core/components/ui/Spinner.vue'
 import { CheckCircle2, XCircle } from '@lucide/vue'
 import { useRouter } from 'vue-router'
-import { routeNames } from '@/core/const/router.const.ts'
+import { ROUTE_NAMES } from '@/core/const/router.const.ts'
 import { useCountdown } from '@/core/composables/use-countdown.ts'
 import { computed, onMounted } from 'vue'
 import AppButton from '@/core/components/ui/AppButton.vue'
@@ -18,14 +18,14 @@ const router = useRouter()
 const maxRedirectSeconds = 10
 const { start, seconds: redirectSeconds } = useCountdown({
   seconds: maxRedirectSeconds,
-  onFinish: () => router.push({ name: routeNames.auth.signIn }),
+  onFinish: () => router.push({ name: ROUTE_NAMES.auth.signIn }),
 })
 
-const { mutateAsync, asyncStatus, status } = useVerifyAccount({
-  onSuccess: start,
+const { mutate, isPending, isError, isSuccess } = useVerifyAccount({
+  onSuccess: () => start(),
 })
 
-onMounted(async () => await mutateAsync(data))
+onMounted(() => mutate(data))
 
 const progress = computed(() => {
   const value = ((maxRedirectSeconds - redirectSeconds.value) / maxRedirectSeconds) * 100
@@ -37,12 +37,12 @@ const progress = computed(() => {
 <template>
   <div :class="$style.container">
     <div :class="$style.innerContainer">
-      <div v-if="asyncStatus === 'loading'" :class="$style.box">
+      <div v-if="isPending" :class="$style.box">
         <Spinner size="md" />
         <h2 :class="$style.title">Verifying your account</h2>
         <p :class="$style.loadingText">Please wait a few seconds</p>
       </div>
-      <div v-if="status === 'success'" :class="$style.box">
+      <div v-if="isSuccess" :class="$style.box">
         <CheckCircle2 style="color: limegreen" :size="48" />
         <h2 :class="$style.title" style="color: limegreen">Account verified!</h2>
         <p :class="$style.successText">
@@ -53,11 +53,11 @@ const progress = computed(() => {
           <div :class="$style.progressFill" :style="{ width: progress }" />
         </div>
       </div>
-      <div v-if="status === 'error'" :class="$style.box">
+      <div v-if="isError" :class="$style.box">
         <XCircle :size="48" style="color: red" />
         <h2 :class="$style.title" style="color: red">Account verification failed</h2>
         <p :class="$style.errorText">The verification link may be expired or invalid.</p>
-        <AppButton @click="() => router.push({ name: routeNames.auth.signIn })"
+        <AppButton @click="() => router.push({ name: ROUTE_NAMES.auth.signIn })"
           >Go to login</AppButton
         >
       </div>

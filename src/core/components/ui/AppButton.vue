@@ -2,7 +2,7 @@
 import { computed, useSlots } from 'vue'
 
 const { variant = 'primary' } = defineProps<{
-  variant?: 'primary' | 'secondary' | 'third' | 'ghost'
+  variant?: 'primary' | 'secondary' | 'third' | 'destructive' | 'ghost'
 }>()
 
 const slots = useSlots()
@@ -86,9 +86,19 @@ const hasIcon = computed(() => !!slots.icon)
   opacity: 0.7;
 }
 
+.button.destructive {
+  background-color: red;
+  color: var(--white);
+}
+
+.button.destructive:hover {
+  background-color: darkred;
+}
+
 .button.ghost {
   padding: 0;
   color: var(--dark-gray);
+  background: transparent;
 }
 
 @media screen and (min-width: 768px) {

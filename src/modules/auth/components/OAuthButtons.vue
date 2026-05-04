@@ -22,21 +22,21 @@ const providers: { icon: string; provider: OAuthProvider; alt: string }[] = [
 </script>
 
 <template>
-  <div class="container">
+  <div :class="$style.container">
     <form
       v-for="{ icon, alt, provider } in providers"
       :key="provider"
       :action="`${config.apiUrl}${config.apiPrefix}/auth/${provider}`"
     >
       <input v-if="redirectPath" type="hidden" name="redirectPath" :value="redirectPath" />
-      <AppButton variant="ghost" class="btn">
-        <img class="icon" :src="icon" :alt="alt" />
+      <AppButton variant="ghost" :class="$style.btn">
+        <img :class="$style.icon" :src="icon" :alt="alt" />
       </AppButton>
     </form>
   </div>
 </template>
 
-<style scoped>
+<style module>
 .container {
   display: flex;
   align-items: center;

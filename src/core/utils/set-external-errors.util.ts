@@ -1,6 +1,6 @@
 import type { InferRegleRoot, SuperCompatibleRegle } from '@regle/core'
 import { isHTTPError } from 'ky'
-import { isApiError } from '@/core/api/api.ts'
+import { isApiError } from '@/core/lib/api.lib.ts'
 
 export const setExternalErrors = <T extends (...args: unknown[]) => SuperCompatibleRegle>(
   error: unknown,

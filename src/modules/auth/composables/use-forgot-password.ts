@@ -1,11 +1,14 @@
 import { useRegleSchema } from '@regle/schemas'
-import { useMutation } from '@pinia/colada'
 import { setExternalErrors } from '@/core/utils/set-external-errors.util.ts'
-import { type ForgotPasswordInput, forgotPasswordSchema } from '@/modules/auth/schemas/forgot-password.schema.ts'
+import {
+  type ForgotPasswordInput,
+  forgotPasswordSchema,
+} from '@/modules/auth/schemas/forgot-password.schema.ts'
 import { forgotPassword } from '@/modules/auth/api/auth.api.ts'
 import { toast } from 'vue-toastflow'
-import type { MutationOptions } from '@/core/types/pinia.type.ts'
-import type { ApiSuccessResponse } from '@/core/api/api.ts'
+import type { ApiSuccessResponse } from '@/core/lib/api.lib.ts'
+import type { MutationOptions } from '@/core/types/tanstack.type.ts'
+import { useMutation } from '@tanstack/vue-query'
 
 export const useForgotPassword = (
   options?: MutationOptions<ApiSuccessResponse<string>, ForgotPasswordInput>,
@@ -21,14 +24,14 @@ export const useForgotPassword = (
     r$,
     mutation: useMutation({
       ...options,
-      mutation: (data: ForgotPasswordInput) => forgotPassword(data),
-      onSuccess: (data, vars, ctx) => {
-        toast.success('Success', { description: data.data })
-        options?.onSuccess?.(data, vars, ctx)
+      mutationFn: (data: ForgotPasswordInput) => forgotPassword(data),
+      onSuccess: (data, params, result, ctx) => {
+        toast.success(data.data)
+        options?.onSuccess?.(data, params, result, ctx)
       },
-      onError: (error, vars, ctx) => {
+      onError: (error, params, result, ctx) => {
         setExternalErrors(error, r$)
-        options?.onError?.(error, vars, ctx)
+        options?.onError?.(error, params, result, ctx)
       },
     }),
   }

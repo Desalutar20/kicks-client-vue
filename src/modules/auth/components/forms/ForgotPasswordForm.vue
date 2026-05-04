@@ -8,19 +8,17 @@ import AppButton from '@/core/components/ui/AppButton.vue'
 
 const {
   r$,
-  mutation: { mutateAsync, asyncStatus },
+  mutation: { mutate, isPending },
 } = useForgotPassword()
 
-const onSubmit = async (e: SubmitEvent) => {
-  e.preventDefault()
+const onSubmit = () => {
   if (!r$.$correct) return
-
-  await mutateAsync(r$.$value)
+  mutate(r$.$value)
 }
 </script>
 
 <template>
-  <form @submit="onSubmit" :class="$style.form">
+  <form @submit.prevent="onSubmit" :class="$style.form">
     <h1 :class="$style.title">Forgot Password</h1>
     <p :class="$style.text">
       Enter your email and we will send you instructions to reset your password.
@@ -36,11 +34,11 @@ const onSubmit = async (e: SubmitEvent) => {
       :class="$style.input"
     />
 
-    <AppButton :disabled="!r$.$correct || asyncStatus == 'loading'"
+    <AppButton :disabled="!r$.$correct || isPending"
       >Send reset link
       <template #icon>
-        <ArrowRight v-if="asyncStatus === 'idle'" :size="20" />
-        <Spinner v-else variant="secondary" />
+        <Spinner v-if="isPending" variant="secondary" />
+        <ArrowRight v-else :size="20" />
       </template>
     </AppButton>
   </form>

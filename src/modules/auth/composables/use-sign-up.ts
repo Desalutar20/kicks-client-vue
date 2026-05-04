@@ -1,11 +1,11 @@
-import { useMutation } from '@pinia/colada'
 import { type SignUpInput, signUpSchema } from '@/modules/auth/schemas/sign-up.schema.ts'
 import { signUp } from '@/modules/auth/api/auth.api.ts'
 import { toast } from 'vue-toastflow'
 import { setExternalErrors } from '@/core/utils/set-external-errors.util.ts'
 import { useRegleSchema } from '@regle/schemas'
-import type { MutationOptions } from '@/core/types/pinia.type.ts'
-import type { ApiSuccessResponse } from '@/core/api/api.ts'
+import { useMutation } from '@tanstack/vue-query'
+import type { MutationOptions } from '@/core/types/tanstack.type.ts'
+import type { ApiSuccessResponse } from '@/core/lib/api.lib.ts'
 
 export const useSignUp = (options?: MutationOptions<ApiSuccessResponse<string>, SignUpInput>) => {
   const { r$ } = useRegleSchema(
@@ -22,14 +22,14 @@ export const useSignUp = (options?: MutationOptions<ApiSuccessResponse<string>, 
     r$,
     mutation: useMutation({
       ...options,
-      mutation: (data: SignUpInput) => signUp(data),
-      onSuccess: (data, vars, ctx) => {
+      mutationFn: (data: SignUpInput) => signUp(data),
+      onSuccess: (data, params, result, ctx) => {
         toast.success(data.data)
-        options?.onSuccess?.(data, vars, ctx)
+        options?.onSuccess?.(data, params, result, ctx)
       },
-      onError: (error, vars, ctx) => {
+      onError: (error, params, result, ctx) => {
         setExternalErrors(error, r$)
-        options?.onError?.(error, vars, ctx)
+        options?.onError?.(error, params, result, ctx)
       },
     }),
   }

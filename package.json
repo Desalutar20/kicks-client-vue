@@ -12,17 +12,19 @@
     "lint": "run-s lint:*",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
-    "format": "prettier --write --experimental-cli src/"
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
   },
   "dependencies": {
     "@lucide/vue": "^1.8.0",
-    "@pinia/colada": "^1.1.0",
     "@primeuix/themes": "^2.0.3",
     "@regle/core": "^1.22.7",
     "@regle/rules": "^1.22.7",
     "@regle/schemas": "^1.22.7",
+    "@tanstack/vue-query": "^5.99.0",
+    "@tanstack/vue-query-devtools": "^6.1.16",
     "ky": "^2.0.1",
-    "pinia": "^3.0.4",
+    "oxfmt": "^0.46.0",
     "primevue": "^4.5.5",
     "vue": "^3.5.31",
     "vue-router": "^5.0.4",
@@ -30,7 +32,6 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@pinia/colada-devtools": "^0.4.5",
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.12.0",
     "@vitejs/plugin-vue": "^6.0.5",
