@@ -4,14 +4,14 @@ import FormInput from '@/core/components/ui/FormInput.vue'
 import { useCreateBrand } from '@/modules/admin/modules/brands/composables/use-create-brand'
 import { useUpdateBrand } from '@/modules/admin/modules/brands/composables/use-update-brand'
 import { ADMIN_BRAND_NAME_MAX_LENGTH } from '@/modules/admin/modules/brands/const/admin-brands-schemas.const'
-import { createBrandSchema } from '@/modules/admin/modules/brands/schemas/create-brand.schema'
 import {
   updateBrandSchema,
   type UpdateBrandInput,
 } from '@/modules/admin/modules/brands/schemas/update-brand.schema'
-import { useRegleSchema } from '@regle/schemas'
 import { Dialog } from 'primevue'
 import { computed, ref } from 'vue'
+import { useRegleSchema } from '@regle/schemas'
+import { createBrandSchema } from '@/modules/admin/modules/brands/schemas/create-brand.schema'
 
 const { updateData } = defineProps<{
   updateData?: UpdateBrandInput
@@ -21,6 +21,7 @@ const { r$ } = useRegleSchema(
   updateData ? { ...updateData } : {},
   updateData ? updateBrandSchema : createBrandSchema,
 )
+
 const { mutate, isPending } = useCreateBrand()
 const { mutate: updateMutate, isPending: isUpdatePending } = useUpdateBrand()
 
@@ -53,8 +54,8 @@ defineExpose({ open })
 
 <template>
   <slot :openDialog="() => (visible = true)"></slot>
-  <Dialog v-model:visible="visible" :class="$style.dialog" modal :header="`${action} Brand`">
-    <form :class="$style.form">
+  <Dialog v-model:visible="visible" modal>
+    <form @submit.prevent="onSubmit" :class="$style.form">
       <FormInput
         :class="$style.input"
         :disabled="isPending || isUpdatePending"
@@ -70,9 +71,7 @@ defineExpose({ open })
           :disabled="
             isPending || isUpdatePending || (updateData && r$.$value.name === updateData.name)
           "
-          type="button"
           variant="third"
-          @click="onSubmit"
           >{{ isPending || isUpdatePending ? 'Loading...' : `${action} Brand` }}
         </AppButton>
       </div>

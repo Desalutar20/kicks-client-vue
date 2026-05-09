@@ -32,7 +32,7 @@ useProviderFilters(getAdminCategoriesSchema, ROUTE_NAMES.admin.categories, ADMIN
             {
               key: 'search',
               label: 'Search',
-              placeholder: 'Serach by name',
+              placeholder: 'Search by name',
               type: { inputType: 'input' },
               transform: (val) => val,
             },

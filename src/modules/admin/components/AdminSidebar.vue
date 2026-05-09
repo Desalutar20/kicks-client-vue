@@ -20,7 +20,7 @@ const links: {
     label: 'DASHBOARD',
   },
   {
-    routeName: ROUTE_NAMES.admin.root,
+    routeName: ROUTE_NAMES.admin.products,
     icon: ClipboardList,
     label: 'PRODUCTS LIST',
   },

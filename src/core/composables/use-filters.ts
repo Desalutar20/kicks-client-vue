@@ -4,7 +4,7 @@ import type { DeepStringValue } from '@/core/types/util.type'
 import { isObjectsEqualSimple } from '@/core/utils/compare-objects.util'
 import { computed, inject, provide, reactive, type ComputedRef, type InjectionKey } from 'vue'
 import { useRouter } from 'vue-router'
-import { lazy, type z, type ZodObject, type ZodRawShape } from 'zod'
+import { type z, type ZodObject, type ZodRawShape } from 'zod'
 
 export type FiltersInjectionKey<TSchema extends ZodObject<ZodRawShape>> = {
   filters: Partial<z.infer<TSchema>>

@@ -24,7 +24,7 @@ useProviderFilters(getAdminUsersSchema, ROUTE_NAMES.admin.users, ADMIN_USERS_FIL
           {
             key: 'search',
             label: 'Search',
-            placeholder: 'Serach by name or email',
+            placeholder: 'Search by name or email',
             type: { inputType: 'input' },
             transform: (val) => val,
           },

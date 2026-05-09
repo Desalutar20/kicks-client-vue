@@ -32,7 +32,7 @@ useProviderFilters(getAdminBrandsSchema, ROUTE_NAMES.admin.brands, ADMIN_BRANDS_
             {
               key: 'search',
               label: 'Search',
-              placeholder: 'Serach by name',
+              placeholder: 'Search by name',
               type: { inputType: 'input' },
               transform: (val) => val,
             },

@@ -11,7 +11,7 @@ import {
 } from '@/modules/admin/modules/categories/schemas/update-category.schema'
 import { useRegleSchema } from '@regle/schemas'
 import { Dialog } from 'primevue'
-import { computed, ref, watch, watchEffect } from 'vue'
+import { computed, ref } from 'vue'
 
 const { updateData } = defineProps<{
   updateData?: UpdateCategoryInput
@@ -21,6 +21,7 @@ const { r$ } = useRegleSchema(
   updateData ? { ...updateData } : {},
   updateData ? updateCategorySchema : createCategorySchema,
 )
+
 const { mutate, isPending } = useCreateCategory()
 const { mutate: updateMutate, isPending: isUpdatePending } = useUpdateCategory()
 
@@ -53,8 +54,8 @@ defineExpose({ open })
 
 <template>
   <slot :openDialog="() => (visible = true)"></slot>
-  <Dialog v-model:visible="visible" :class="$style.dialog" modal :header="`${action} Category`">
-    <form :class="$style.form">
+  <Dialog v-model:visible="visible" :class="$style.dialog" modal>
+    <form @submit.prevent="onSubmit" :class="$style.form">
       <FormInput
         :class="$style.input"
         :disabled="isPending || isUpdatePending"
@@ -70,9 +71,7 @@ defineExpose({ open })
           :disabled="
             isPending || isUpdatePending || (updateData && r$.$value.name === updateData.name)
           "
-          type="button"
           variant="third"
-          @click="onSubmit"
           >{{ isPending || isUpdatePending ? 'Loading...' : `${action} Category` }}
         </AppButton>
       </div>

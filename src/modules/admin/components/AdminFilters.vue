@@ -9,21 +9,21 @@ import { FilterIcon } from '@lucide/vue'
 import AppInput from '@/core/components/ui/AppInput.vue'
 import AppSelect from '@/core/components/ui/AppSelect.vue'
 
-type SchemaKeys = {
-  [K in keyof z.infer<TSchema>]: {
+export type SchemaKeys<T extends ZodObject<ZodRawShape>> = {
+  [K in keyof z.infer<T>]: {
     key: K
     label: string
     placeholder: string
     type:
       | { inputType: 'input' }
       | { inputType: 'select'; options: { value: string; label: string; isDefault?: boolean }[] }
-    transform: (value: string) => z.infer<TSchema>[K]
+    transform: (value: string) => z.infer<T>[K]
   }
-}[keyof z.infer<TSchema>]
+}[keyof z.infer<T>]
 
 const { injectionKey, keys, title } = defineProps<{
   injectionKey: InjectionKey<FiltersInjectionKey<TSchema>>
-  keys: SchemaKeys[]
+  keys: SchemaKeys<TSchema>[]
   title: string
 }>()
 

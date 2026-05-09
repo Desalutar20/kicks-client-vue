@@ -67,12 +67,15 @@ const slots = useSlots()
   font-weight: 600;
 
   td {
+    max-width: 400px;
     text-align: start;
     font-size: 14px;
     border-bottom: 1px solid color-mix(in srgb, var(--dark-gray) 20%, transparent);
     padding: 16px 16px 16px 0;
-    word-break: break-all;
-    overflow-wrap: break-word;
+
+    white-space: normal;
+    overflow-wrap: anywhere;
+    vertical-align: top;
   }
 
   td:last-child {

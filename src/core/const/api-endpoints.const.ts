@@ -22,5 +22,11 @@ export const API_ENDPOINTS = {
     createCategory: '/admin/categories',
     updateCategory: (id: string) => `/admin/categories/${id}`,
     deleteCategory: (id: string) => `/admin/categories/${id}`,
+
+    getProductFilterOptions: '/admin/products/filters',
+    getProducts: '/admin/products',
+    createProduct: '/admin/products',
+    updateProduct: (id: string) => `/admin/products/${id}`,
+    toggleProductIsDeleted: (id: string) => `/admin/products/${id}`,
   },
 } as const

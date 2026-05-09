@@ -10,6 +10,7 @@ export const ROUTE_NAMES = {
   },
   admin: {
     root: 'admin-root',
+    products: 'products',
     users: 'users',
     brands: 'brands',
     categories: 'categories',

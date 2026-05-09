@@ -17,10 +17,10 @@ const emit = defineEmits<{
 
 <template>
   <div :class="$style.container">
-    <AppButton v-if="prevCursor" :disabled="disabled" @click="emit('prev')">
+    <AppButton variant="third" v-if="prevCursor" :disabled="disabled" @click="emit('prev')">
       <ChevronLeft
     /></AppButton>
-    <AppButton v-if="nextCursor" :disabled="disabled" @click="emit('next')">
+    <AppButton variant="third" v-if="nextCursor" :disabled="disabled" @click="emit('next')">
       <ChevronRight />
     </AppButton>
   </div>

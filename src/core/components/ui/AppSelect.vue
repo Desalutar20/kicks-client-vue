@@ -60,7 +60,7 @@ const selectAttrs = computed(() => {
 }
 
 .select {
-  padding: 10px 12px;
+  padding: 14px 16px;
 
   width: 100%;
   border: none;
