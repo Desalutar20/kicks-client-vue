@@ -12,6 +12,7 @@ import { ADMIN_PRODUCTS_FILTERS } from '@/modules/admin/modules/products/const/a
 import { GET_ADMIN_PRODUCTS_MAX_LIMIT } from '@/modules/admin/modules/products/const/admin-products-schemas.const'
 import { getAdminProductsSchema } from '@/modules/admin/modules/products/schemas/get-admin-products.schema'
 import { computed } from 'vue'
+import { RouterLink } from 'vue-router'
 
 const { data } = useGetAdminProductFilterOptions()
 useProviderFilters(getAdminProductsSchema, ROUTE_NAMES.admin.products, ADMIN_PRODUCTS_FILTERS)
@@ -119,9 +120,12 @@ const filterKeys = computed(() => {
               <AppButton variant="third" @click="props.openDialog">Create product</AppButton>
             </template>
           </CreateUpdateProductForm>
+          <RouterLink :to="{ name: ROUTE_NAMES.admin.productSkus }" :class="$style.link"
+            >Variants</RouterLink
+          >
         </div>
         <AdminFilters
-          :injection-key="ADMIN_PRODUCTS_FILTERS"
+          :injectionKey="ADMIN_PRODUCTS_FILTERS"
           title="Product filters"
           :keys="filterKeys"
         />
@@ -156,5 +160,38 @@ const filterKeys = computed(() => {
 .formContainer {
   display: flex;
   column-gap: 8px;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 24px;
+
+  border: 1px solid var(--dark-gray);
+  border-radius: 8px;
+
+  background-color: var(--white);
+  color: var(--dark-gray);
+
+  font-weight: 500;
+  text-decoration: none;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.link:hover {
+  background-color: var(--gray);
+  border-color: var(--dark-gray-hover);
+  color: var(--dark-gray-hover);
+}
+
+.link:active {
+  transform: scale(0.98);
 }
 </style>

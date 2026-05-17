@@ -1,45 +1,45 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import { EyeIcon, EyeOffIcon } from '@lucide/vue'
-import { computed, ref, useAttrs } from 'vue'
+import { computed, type InputTypeHTMLAttribute, ref, useAttrs, useTemplateRef } from 'vue'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const { type = 'text' } = defineProps<{
-  type?: HTMLInputElement['type']
-}>()
-
 const attrs = useAttrs()
 
 const isVisible = ref(false)
 
-const model = defineModel<string>()
+const model = defineModel<T>()
 
-const inputType = computed(() => {
-  if (type === 'password') {
+const inputRef = useTemplateRef<HTMLInputElement>('appInput')
+
+const inputType = computed<InputTypeHTMLAttribute>(() => {
+  if (attrs.type === 'password') {
     return isVisible.value ? 'text' : 'password'
   }
 
-  return type || 'text'
+  return (attrs.type as InputTypeHTMLAttribute) || 'text'
 })
 
 function toggle() {
   isVisible.value = !isVisible.value
 }
+
+defineExpose({ open: () => inputRef.value?.click() })
 </script>
 
 <template>
-  <div :class="['wrapper', attrs.class]">
-    <input v-model="model" v-bind="$attrs" class="input" :type="inputType" />
-    <button v-if="type === 'password'" class="icon" type="button" @click="toggle">
+  <div :class="[$style.wrapper, attrs.class]">
+    <input ref="appInput" v-model="model" v-bind="$attrs" :class="$style.input" :type="inputType" />
+    <button v-if="attrs.type === 'password'" :class="$style.icon" type="button" @click="toggle">
       <EyeIcon v-if="!isVisible" :size="18" color="black" />
       <EyeOffIcon v-else :size="18" color="black" />
     </button>
   </div>
 </template>
 
-<style scoped>
+<style module>
 .wrapper {
   position: relative;
   display: flex;

@@ -1,7 +1,7 @@
 import { useParseQuery } from '@/core/composables/use-parse-query'
 import { ROUTE_NAMES } from '@/core/const/router.const'
 import type { DeepStringValue } from '@/core/types/util.type'
-import { isObjectsEqualSimple } from '@/core/utils/compare-objects.util'
+import { isObjectsEqualSimple } from '@/core/utils/objects.util'
 import { computed, inject, provide, reactive, type ComputedRef, type InjectionKey } from 'vue'
 import { useRouter } from 'vue-router'
 import { type z, type ZodObject, type ZodRawShape } from 'zod'

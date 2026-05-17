@@ -47,7 +47,7 @@ export const useDeleteBrand = (
       if (result?.previousBrands) {
         queryClient.setQueryData(
           ADMIN_BRANDS_QUERY_KEYS.getAdminBrands(filters),
-          result?.previousBrands,
+          result.previousBrands,
         )
       }
 

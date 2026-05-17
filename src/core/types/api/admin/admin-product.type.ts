@@ -1,11 +1,9 @@
 import type { AdminBrand } from '@/core/types/api/admin/admin-brand.type'
 import type { AdminCategory } from '@/core/types/api/admin/admin-category.type'
+import type { BaseAdminEntity } from '@/core/types/api/admin/base-admin-entity.type'
 import type { Nullable } from '@/core/types/util.type'
 
-export type AdminProduct = {
-  id: string
-  createdAt: string
-  updatedAt: string
+export type AdminProduct = BaseAdminEntity & {
   title: string
   description: string
   gender: ProductGender
@@ -27,4 +25,21 @@ export type AdminProductFilterOptions = {
   availableCategories: { id: AdminCategory['id']; name: AdminCategory['name'] }[]
   brands: { id: AdminBrand['id']; name: AdminBrand['name'] }[]
   availableBrands: { id: AdminBrand['id']; name: AdminBrand['name'] }[]
+}
+
+export type AdminProductSku = BaseAdminEntity & {
+  price: number
+  salePrice: Nullable<number>
+  quantity: number
+  size: number
+  color: string
+  sku: string
+  product: AdminProduct
+  images: AdminProductSkuImage[]
+}
+
+export type AdminProductSkuImage = BaseAdminEntity & {
+  imageId: string
+  imageUrl: string
+  imageName: string
 }

@@ -6,7 +6,8 @@ import CreateUpdateBrandForm from '@/modules/admin/modules/brands/components/Cre
 import { useDeleteBrand } from '@/modules/admin/modules/brands/composables/use-delete-brand'
 import { EllipsisVertical, TrashIcon, PencilIcon } from '@lucide/vue'
 import { Popover, useConfirm } from 'primevue'
-import { ref, useCssModule } from 'vue'
+import { useCssModule, useTemplateRef } from 'vue'
+import type { ComponentExposed } from 'vue-component-type-helpers'
 
 const { brandId, brandName } = defineProps<{
   brandId: AdminBrand['id']
@@ -18,7 +19,7 @@ const { mutate, isPending } = useDeleteBrand()
 
 const confirm = useConfirm()
 
-const formRef = ref()
+const formRef = useTemplateRef<ComponentExposed<typeof CreateUpdateBrandForm>>('formRef')
 
 const confirmDeleteBrand = () => {
   confirm.require({

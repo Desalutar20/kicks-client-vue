@@ -47,7 +47,7 @@ export const useDeleteCategory = (
       if (result?.previousCategories) {
         queryClient.setQueryData(
           ADMIN_CATEGORIES_QUERY_KEYS.getAdminCategories(filters),
-          result?.previousCategories,
+          result.previousCategories,
         )
       }
 

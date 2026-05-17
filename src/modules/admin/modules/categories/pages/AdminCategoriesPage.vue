@@ -8,8 +8,8 @@ import AppButton from '@/core/components/ui/AppButton.vue'
 import { getAdminCategoriesSchema } from '@/modules/admin/modules/categories/schemas/get-admin-categories.schema'
 import { ADMIN_CATEGORIES_FILTERS } from '@/modules/admin/modules/categories/const/admin-categories-injection-keys.const'
 import { GET_ADMIN_CATEGORIES_MAX_LIMIT } from '@/modules/admin/modules/categories/const/admin-categories-schemas.const'
-import AdminCategoriesTable from '@/modules/admin/modules/categories/components/AdminCategoriesTable.vue'
 import CreateUpdateCategoryForm from '@/modules/admin/modules/categories/components/CreateUpdateCategoryForm.vue'
+import AdminCategoriesTable from '@/modules/admin/modules/categories/components/AdminCategoriesTable.vue'
 
 useProviderFilters(getAdminCategoriesSchema, ROUTE_NAMES.admin.categories, ADMIN_CATEGORIES_FILTERS)
 </script>
@@ -26,7 +26,7 @@ useProviderFilters(getAdminCategoriesSchema, ROUTE_NAMES.admin.categories, ADMIN
           </template>
         </CreateUpdateCategoryForm>
         <AdminFilters
-          :injection-key="ADMIN_CATEGORIES_FILTERS"
+          :injectionKey="ADMIN_CATEGORIES_FILTERS"
           title="CATEGORIES filters"
           :keys="[
             {

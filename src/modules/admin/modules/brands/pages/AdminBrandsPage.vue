@@ -26,7 +26,7 @@ useProviderFilters(getAdminBrandsSchema, ROUTE_NAMES.admin.brands, ADMIN_BRANDS_
           </template>
         </CreateUpdateBrandForm>
         <AdminFilters
-          :injection-key="ADMIN_BRANDS_FILTERS"
+          :injectionKey="ADMIN_BRANDS_FILTERS"
           title="Brands filters"
           :keys="[
             {

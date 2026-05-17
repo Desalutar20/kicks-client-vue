@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from '@/core/const/api-endpoints.const'
 import { http, type ApiKeysetResponse, type ApiSuccessResponse } from '@/core/lib/api.lib'
 import type { AdminBrand } from '@/core/types/api/admin/admin-brand.type'
-import { buildQueryParams } from '@/core/utils/build-query-params.util'
+import { buildQueryParams } from '@/core/utils/query-params.util'
 import type { BrandIdInput } from '@/modules/admin/modules/brands/schemas/brand-id.schema'
 import type { CreateBrandInput } from '@/modules/admin/modules/brands/schemas/create-brand.schema'
 import type { GetAdminBrandsInput } from '@/modules/admin/modules/brands/schemas/get-admin-brands.schema'
@@ -16,7 +16,7 @@ export const getAdminBrands = async (query: GetAdminBrandsInput) => {
 
 export const createBrand = async (data: CreateBrandInput) =>
   await http
-    .post<ApiSuccessResponse<string>>(API_ENDPOINTS.admin.createBrand, { json: data })
+    .post<ApiSuccessResponse<AdminBrand>>(API_ENDPOINTS.admin.createBrand, { json: data })
     .json()
 
 export const updateBrand = async (data: UpdateBrandInput) =>

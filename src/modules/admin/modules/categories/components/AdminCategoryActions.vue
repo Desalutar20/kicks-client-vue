@@ -6,7 +6,8 @@ import CreateUpdateCategoryForm from '@/modules/admin/modules/categories/compone
 import { useDeleteCategory } from '@/modules/admin/modules/categories/composables/use-delete-category'
 import { EllipsisVertical, TrashIcon, PencilIcon } from '@lucide/vue'
 import { Popover, useConfirm } from 'primevue'
-import { ref, useCssModule } from 'vue'
+import { useCssModule, useTemplateRef } from 'vue'
+import type { ComponentExposed } from 'vue-component-type-helpers'
 
 const { categoryId, categoryName } = defineProps<{
   categoryId: AdminCategory['id']
@@ -18,7 +19,7 @@ const { mutate, isPending } = useDeleteCategory()
 
 const confirm = useConfirm()
 
-const formRef = ref()
+const formRef = useTemplateRef<ComponentExposed<typeof CreateUpdateCategoryForm>>('formRef')
 
 const confirmDeleteCategory = () => {
   confirm.require({

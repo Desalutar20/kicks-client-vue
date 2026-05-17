@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from '@/core/const/api-endpoints.const'
 import { http, type ApiKeysetResponse, type ApiSuccessResponse } from '@/core/lib/api.lib'
 import type { AdminUser } from '@/core/types/api/admin/admin-user.type'
-import { buildQueryParams } from '@/core/utils/build-query-params.util'
+import { buildQueryParams } from '@/core/utils/query-params.util'
 import type { GetAdminUsersInput } from '@/modules/admin/modules/users/schemas/get-admin-users.schema'
 import type { UserIdInput } from '@/modules/admin/modules/users/schemas/user-id.schema'
 

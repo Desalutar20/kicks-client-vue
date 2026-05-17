@@ -4,7 +4,7 @@ import type {
   AdminProduct,
   AdminProductFilterOptions,
 } from '@/core/types/api/admin/admin-product.type'
-import { buildQueryParams } from '@/core/utils/build-query-params.util'
+import { buildQueryParams } from '@/core/utils/query-params.util'
 import type { CreateProductInput } from '@/modules/admin/modules/products/schemas/create-product.schema'
 import type { GetAdminProductsInput } from '@/modules/admin/modules/products/schemas/get-admin-products.schema'
 import type { ProductIdInput } from '@/modules/admin/modules/products/schemas/product-id.schema'

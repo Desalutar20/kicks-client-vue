@@ -10,7 +10,7 @@ const { options } = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void
+  'update:modelValue': [value: string]
 }>()
 
 const attrs = useAttrs()
@@ -33,9 +33,9 @@ const selectAttrs = computed(() => {
         {{ attrs.placeholder }}
       </option>
 
-      <option v-for="opt in options" :key="opt.value" :value="opt.value">
-        {{ opt.label }}
-      </option>
+      <slot :options="options">
+        <option v-for="opt in options" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
+      </slot>
     </select>
   </div>
 </template>

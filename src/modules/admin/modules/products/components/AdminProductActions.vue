@@ -2,11 +2,12 @@
 import AppButton from '@/core/components/ui/AppButton.vue'
 import { usePopover } from '@/core/composables/use-popover'
 import type { AdminProduct } from '@/core/types/api/admin/admin-product.type'
-import { EllipsisVertical, TrashIcon, PencilIcon, RefreshCw } from '@lucide/vue'
+import { EllipsisVertical, TrashIcon, PencilIcon, RefreshCw, PlusCircle } from '@lucide/vue'
 import { Popover, useConfirm } from 'primevue'
-import { ref, useCssModule } from 'vue'
 import CreateUpdateProductForm from '@/modules/admin/modules/products/components/CreateUpdateProductForm.vue'
 import { useToggleProductIsDeleted } from '@/modules/admin/modules/products/composables/use-toggle-product-is-deleted'
+import { ROUTE_NAMES } from '@/core/const/router.const'
+import { ref } from 'vue'
 
 const { product } = defineProps<{
   product: AdminProduct
@@ -16,7 +17,6 @@ const { refId, popover, toggleMenu } = usePopover()
 const { mutate, isPending } = useToggleProductIsDeleted()
 
 const confirm = useConfirm()
-
 const formRef = ref()
 
 const confirmToggleProductDeleted = () => {
@@ -61,6 +61,18 @@ const confirmToggleProductDeleted = () => {
 
   <Popover :ref="refId" :unstyled="true">
     <div :class="$style.dropdown">
+      <RouterLink
+        :to="{
+          name: ROUTE_NAMES.admin.specificProduct,
+          params: { product: JSON.stringify(product) },
+        }"
+        :disabled="isPending"
+        :class="[$style.btn, $style.link]"
+      >
+        <PlusCircle :size="16" :class="$style.createVariantIcon" />
+        Create variant
+      </RouterLink>
+
       <AppButton
         :disabled="isPending"
         @click="
@@ -109,6 +121,21 @@ const confirmToggleProductDeleted = () => {
   border-radius: 12px;
 }
 
+.link {
+  display: flex;
+  align-items: center;
+  flex-direction: row !important;
+  justify-content: space-between;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
 .btn {
   width: 100%;
   padding: 12px 8px !important;
@@ -116,11 +143,14 @@ const confirmToggleProductDeleted = () => {
   text-transform: capitalize !important;
   gap: 8px !important;
   flex-direction: row-reverse;
-  transition: background-colors 0.3s ease;
 
   &:hover {
     background-color: oklch(98.4% 0.003 247.858) !important;
   }
+}
+
+.createVariantIcon {
+  color: silver;
 }
 
 .deleteIcon {

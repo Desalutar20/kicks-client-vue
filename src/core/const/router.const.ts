@@ -11,6 +11,9 @@ export const ROUTE_NAMES = {
   admin: {
     root: 'admin-root',
     products: 'products',
+    specificProduct: 'product',
+    productSkus: 'products-skus',
+    specificProductSku: 'productSku',
     users: 'users',
     brands: 'brands',
     categories: 'categories',

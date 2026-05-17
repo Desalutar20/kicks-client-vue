@@ -28,5 +28,13 @@ export const API_ENDPOINTS = {
     createProduct: '/admin/products',
     updateProduct: (id: string) => `/admin/products/${id}`,
     toggleProductIsDeleted: (id: string) => `/admin/products/${id}`,
+
+    getProductSkus: '/admin/products/skus',
+    getProductSku: (id: string) => `/admin/products/skus/${id}`,
+    createProductSku: (id: string) => `/admin/products/${id}/skus`,
+    updateProductSku: (id: string) => `/admin/products/skus/${id}`,
+    deleteProductSku: (id: string) => `/admin/products/skus/${id}`,
+    deleteProductSkuImage: (id: string, imageId: string) =>
+      `/admin/products/skus/${id}/images/${imageId}`,
   },
 } as const

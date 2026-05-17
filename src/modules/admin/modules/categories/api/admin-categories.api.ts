@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from '@/core/const/api-endpoints.const'
 import { http, type ApiKeysetResponse, type ApiSuccessResponse } from '@/core/lib/api.lib'
 import type { AdminCategory } from '@/core/types/api/admin/admin-category.type'
-import { buildQueryParams } from '@/core/utils/build-query-params.util'
+import { buildQueryParams } from '@/core/utils/query-params.util'
 
 import type { CategoryIdInput } from '@/modules/admin/modules/categories/schemas/category-id.schema'
 import type { CreateCategoryInput } from '@/modules/admin/modules/categories/schemas/create-category.schema'

@@ -2,5 +2,5 @@ import type { GetAdminProductsInput } from '@/modules/admin/modules/products/sch
 
 export const ADMIN_PRODUCTS_QUERY_KEYS = {
   getAdminProductFilterOptions: () => ['adminProductFilterOptions'] as const,
-  getAdminProducts: (filters: GetAdminProductsInput) => ['products', filters] as const,
+  getAdminProducts: (filters: GetAdminProductsInput) => ['adminProducts', filters] as const,
 } as const

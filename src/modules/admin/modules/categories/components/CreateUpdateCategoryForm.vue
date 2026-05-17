@@ -1,15 +1,9 @@
 <script lang="ts" setup>
 import AppButton from '@/core/components/ui/AppButton.vue'
 import FormInput from '@/core/components/ui/FormInput.vue'
-import { useCreateCategory } from '@/modules/admin/modules/categories/composables/use-create-category'
-import { useUpdateCategory } from '@/modules/admin/modules/categories/composables/use-update-category'
+import { useCreateUpdateCategory } from '@/modules/admin/modules/categories/composables/use-create-update-category'
 import { ADMIN_CATEGORY_NAME_MAX_LENGTH } from '@/modules/admin/modules/categories/const/admin-categories-schemas.const'
-import { createCategorySchema } from '@/modules/admin/modules/categories/schemas/create-category.schema'
-import {
-  updateCategorySchema,
-  type UpdateCategoryInput,
-} from '@/modules/admin/modules/categories/schemas/update-category.schema'
-import { useRegleSchema } from '@regle/schemas'
+import { type UpdateCategoryInput } from '@/modules/admin/modules/categories/schemas/update-category.schema'
 import { Dialog } from 'primevue'
 import { computed, ref } from 'vue'
 
@@ -17,31 +11,11 @@ const { updateData } = defineProps<{
   updateData?: UpdateCategoryInput
 }>()
 
-const { r$ } = useRegleSchema(
-  updateData ? { ...updateData } : {},
-  updateData ? updateCategorySchema : createCategorySchema,
-)
-
-const { mutate, isPending } = useCreateCategory()
-const { mutate: updateMutate, isPending: isUpdatePending } = useUpdateCategory()
-
 const visible = ref(false)
 
-const onSubmit = () => {
-  if (r$.$invalid) return
-
-  if ('id' in r$.$value) {
-    updateMutate(r$.$value as UpdateCategoryInput)
-  } else {
-    mutate(r$.$value)
-  }
-
-  r$.$reset({
-    toInitialState: true,
-  })
-
-  visible.value = false
-}
+const { r$, onSubmit, isPending } = useCreateUpdateCategory(updateData, {
+  onSuccess: () => (visible.value = false),
+})
 
 const action = computed(() => (updateData ? 'Update' : 'Create'))
 
@@ -58,7 +32,7 @@ defineExpose({ open })
     <form @submit.prevent="onSubmit" :class="$style.form">
       <FormInput
         :class="$style.input"
-        :disabled="isPending || isUpdatePending"
+        :disabled="isPending"
         placeholder="Name"
         :field="r$.name"
         v-model="r$.$value.name"
@@ -68,11 +42,9 @@ defineExpose({ open })
       <div :class="$style.btns">
         <AppButton type="button" variant="secondary" @click="visible = false">Cancel</AppButton>
         <AppButton
-          :disabled="
-            isPending || isUpdatePending || (updateData && r$.$value.name === updateData.name)
-          "
+          :disabled="isPending || (updateData && r$.$value.name === updateData.name)"
           variant="third"
-          >{{ isPending || isUpdatePending ? 'Loading...' : `${action} Category` }}
+          >{{ isPending ? 'Loading...' : `${action} Category` }}
         </AppButton>
       </div>
     </form>

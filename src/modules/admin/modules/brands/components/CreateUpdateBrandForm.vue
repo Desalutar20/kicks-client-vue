@@ -1,47 +1,21 @@
 <script lang="ts" setup>
 import AppButton from '@/core/components/ui/AppButton.vue'
 import FormInput from '@/core/components/ui/FormInput.vue'
-import { useCreateBrand } from '@/modules/admin/modules/brands/composables/use-create-brand'
-import { useUpdateBrand } from '@/modules/admin/modules/brands/composables/use-update-brand'
 import { ADMIN_BRAND_NAME_MAX_LENGTH } from '@/modules/admin/modules/brands/const/admin-brands-schemas.const'
-import {
-  updateBrandSchema,
-  type UpdateBrandInput,
-} from '@/modules/admin/modules/brands/schemas/update-brand.schema'
+import { type UpdateBrandInput } from '@/modules/admin/modules/brands/schemas/update-brand.schema'
 import { Dialog } from 'primevue'
 import { computed, ref } from 'vue'
-import { useRegleSchema } from '@regle/schemas'
-import { createBrandSchema } from '@/modules/admin/modules/brands/schemas/create-brand.schema'
+import { useCreateUpdateBrand } from '@/modules/admin/modules/brands/composables/use-create-update-brand'
 
 const { updateData } = defineProps<{
   updateData?: UpdateBrandInput
 }>()
 
-const { r$ } = useRegleSchema(
-  updateData ? { ...updateData } : {},
-  updateData ? updateBrandSchema : createBrandSchema,
-)
-
-const { mutate, isPending } = useCreateBrand()
-const { mutate: updateMutate, isPending: isUpdatePending } = useUpdateBrand()
-
 const visible = ref(false)
 
-const onSubmit = () => {
-  if (r$.$invalid) return
-
-  if ('id' in r$.$value) {
-    updateMutate(r$.$value as UpdateBrandInput)
-  } else {
-    mutate(r$.$value)
-  }
-
-  r$.$reset({
-    toInitialState: true,
-  })
-
-  visible.value = false
-}
+const { r$, onSubmit, isPending } = useCreateUpdateBrand(updateData, {
+  onSuccess: () => (visible.value = false),
+})
 
 const action = computed(() => (updateData ? 'Update' : 'Create'))
 
@@ -58,7 +32,7 @@ defineExpose({ open })
     <form @submit.prevent="onSubmit" :class="$style.form">
       <FormInput
         :class="$style.input"
-        :disabled="isPending || isUpdatePending"
+        :disabled="isPending"
         placeholder="Name"
         :field="r$.name"
         v-model="r$.$value.name"
@@ -68,11 +42,9 @@ defineExpose({ open })
       <div :class="$style.btns">
         <AppButton type="button" variant="secondary" @click="visible = false">Cancel</AppButton>
         <AppButton
-          :disabled="
-            isPending || isUpdatePending || (updateData && r$.$value.name === updateData.name)
-          "
+          :disabled="isPending || (updateData && r$.$value.name === updateData.name)"
           variant="third"
-          >{{ isPending || isUpdatePending ? 'Loading...' : `${action} Brand` }}
+          >{{ isPending ? 'Loading...' : `${action} Brand` }}
         </AppButton>
       </div>
     </form>

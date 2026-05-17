@@ -32,33 +32,35 @@ const onSubmit = async () => {
     <h1 :class="$style.title">Reset Password</h1>
     <p :class="$style.text">Enter your new password to complete the reset process.</p>
 
-    <FormInput
-      placeholder="New Password"
-      :field="r$.newPassword"
-      v-model="r$.$value.newPassword"
-      type="password"
-      required
-      :minlength="PASSWORD_MIN_LENGTH"
-      :maxlength="PASSWORD_MAX_LENGTH"
-      :class="$style.input"
-    />
+    <fieldset :style="{ margin: 0, padding: 0 }" :disabled="isPending">
+      <FormInput
+        placeholder="New Password"
+        :field="r$.newPassword"
+        v-model="r$.$value.newPassword"
+        type="password"
+        required
+        :minlength="PASSWORD_MIN_LENGTH"
+        :maxlength="PASSWORD_MAX_LENGTH"
+        :class="$style.input"
+      />
 
-    <FormInput
-      placeholder="Password Confirm"
-      :field="r$.newPasswordConfirm"
-      v-model="r$.$value.newPasswordConfirm"
-      type="password"
-      required
-      :class="$style.input"
-    />
+      <FormInput
+        placeholder="Password Confirm"
+        :field="r$.newPasswordConfirm"
+        v-model="r$.$value.newPasswordConfirm"
+        type="password"
+        required
+        :class="$style.input"
+      />
 
-    <AppButton :disabled="r$.$invalid || isPending"
-      >Reset password
-      <template #icon>
-        <Spinner v-if="isPending" variant="secondary" />
-        <ArrowRight v-else :size="20" />
-      </template>
-    </AppButton>
+      <AppButton :disabled="r$.$invalid || isPending"
+        >Reset password
+        <template #icon>
+          <Spinner v-if="isPending" variant="secondary" />
+          <ArrowRight v-else :size="20" />
+        </template>
+      </AppButton>
+    </fieldset>
   </form>
 </template>
 

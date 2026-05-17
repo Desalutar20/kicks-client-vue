@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import AppInput from '@/core/components/ui/AppInput.vue'
 import type { RegleFieldStatus } from '@regle/core'
 import { useAttrs } from 'vue'
@@ -7,10 +7,10 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const modelValue = defineModel<string>()
+const modelValue = defineModel<T>()
 
 const { field } = defineProps<{
-  field: Partial<RegleFieldStatus<string>>
+  field: Partial<RegleFieldStatus<T>>
 }>()
 
 const attrs = useAttrs()

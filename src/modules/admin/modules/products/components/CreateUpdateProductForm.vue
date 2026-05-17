@@ -4,57 +4,34 @@ import AppSelect from '@/core/components/ui/AppSelect.vue'
 import FormInput from '@/core/components/ui/FormInput.vue'
 import { ROUTE_NAMES } from '@/core/const/router.const'
 import { ProductGender } from '@/core/types/api/admin/admin-product.type'
-import { isObjectsEqualSimple } from '@/core/utils/compare-objects.util'
-import { createBrandSchema } from '@/modules/admin/modules/brands/schemas/create-brand.schema'
-import { useCreateProduct } from '@/modules/admin/modules/products/composables/use-create-product'
 import { useGetAdminProductFilterOptions } from '@/modules/admin/modules/products/composables/use-get-admin-product-filter-options'
 import {
   ADMIN_PRODUCT_DESCRIPTION_MAX_LENGTH,
   ADMIN_PRODUCT_TAGS_MAX_LENGTH,
   ADMIN_PRODUCT_TITLE_MAX_LENGTH,
 } from '@/modules/admin/modules/products/const/admin-products-schemas.const'
-import {
-  updateProductSchema,
-  type UpdateProductInput,
-} from '@/modules/admin/modules/products/schemas/update-product.schema'
-import { useRegleSchema } from '@regle/schemas'
+import { type UpdateProductInput } from '@/modules/admin/modules/products/schemas/update-product.schema'
 import { Dialog, MultiSelect } from 'primevue'
 import { computed, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import AppInput from '@/core/components/ui/AppInput.vue'
-import type { CreateProductInput } from '@/modules/admin/modules/products/schemas/create-product.schema'
-import { useUpdateProduct } from '@/modules/admin/modules/products/composables/use-update-product'
+import { useCreateUpdateProduct } from '@/modules/admin/modules/products/composables/use-create-update-product'
 
 const { updateData } = defineProps<{
   updateData?: UpdateProductInput
 }>()
 
-const { r$ } = useRegleSchema(
-  updateData
-    ? {
-        ...updateData,
-        brandId: updateData.brandId ?? undefined,
-        categoryId: updateData.categoryId ?? undefined,
-      }
-    : {
-        title: '',
-        description: '',
-        gender: undefined,
-        tags: [],
-        brandId: undefined,
-        categoryId: undefined,
-      },
-  updateData ? updateProductSchema : createBrandSchema,
-)
-
-const { data, isPending } = useGetAdminProductFilterOptions()
-const { mutate, isPending: isCreatePending } = useCreateProduct()
-const { mutate: updateMutate, isPending: isUpdatePending } = useUpdateProduct()
 const visible = ref(false)
+
+const { data, isPending: productFiltersPending } = useGetAdminProductFilterOptions()
+const { r$, onSubmit, isPending, noChanges, newTag, addTag } = useCreateUpdateProduct(updateData, {
+  onSuccess: () => (visible.value = false),
+})
 
 const tagOptions = computed(() =>
   [...(data.value?.data.tags ?? []), ...r$.$value.tags!].map((t) => ({ label: t, value: t })),
 )
+
 const open = () => {
   visible.value = true
 }
@@ -67,39 +44,6 @@ const isUnavailable = computed(
 )
 
 const action = computed(() => (updateData ? 'Update' : 'Create'))
-const noChanges = computed(() =>
-  !updateData ? false : isObjectsEqualSimple(r$.$value, updateData),
-)
-
-const onSubmit = () => {
-  console.log(r$.$dirty)
-  if (r$.$dirty) return
-
-  if (r$.$value.id) {
-    updateMutate(r$.$value as UpdateProductInput)
-  } else {
-    mutate(r$.$value as CreateProductInput)
-  }
-
-  r$.$reset({
-    toInitialState: true,
-  })
-
-  visible.value = false
-}
-const newTag = ref('')
-
-const addTag = () => {
-  if (!newTag.value) return
-
-  const exists = r$.$value.tags!.includes(newTag.value)
-
-  if (!exists) {
-    r$.$value.tags = [...r$.$value.tags!, newTag.value]
-  }
-
-  newTag.value = ''
-}
 </script>
 
 <template>
@@ -122,10 +66,9 @@ const addTag = () => {
     </div>
 
     <form @submit.prevent="onSubmit" v-else>
-      <div :class="$style.container">
+      <fieldset :class="$style.container" :disabled="productFiltersPending || isPending">
         <FormInput
           :class="$style.input"
-          :disabled="isPending || isCreatePending || isUpdatePending"
           placeholder="Title"
           :field="r$.title!"
           v-model="r$.$value.title"
@@ -135,7 +78,6 @@ const addTag = () => {
 
         <FormInput
           :class="$style.input"
-          :disabled="isPending || isCreatePending"
           placeholder="Description"
           :field="r$.description!"
           v-model="r$.$value.description"
@@ -178,11 +120,11 @@ const addTag = () => {
           :disabled="r$.$value.tags!.length === ADMIN_PRODUCT_TAGS_MAX_LENGTH"
         />
         <AppInput v-model="newTag" placeholder="Add new tag" @keydown.enter="addTag" />
-      </div>
+      </fieldset>
       <AppButton
         @click="onSubmit"
         type="button"
-        :disabled="isUnavailable || isPending || isCreatePending || noChanges"
+        :disabled="r$.$invalid || isUnavailable || productFiltersPending || isPending || noChanges"
         variant="third"
         >{{ action }} product</AppButton
       >

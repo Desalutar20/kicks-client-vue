@@ -18,7 +18,7 @@ useProviderFilters(getAdminUsersSchema, ROUTE_NAMES.admin.users, ADMIN_USERS_FIL
     <div :class="$style.top">
       <AdminHeading title="Users List" :breadcrumb="['Home', 'Users']" />
       <AdminFilters
-        :injection-key="ADMIN_USERS_FILTERS"
+        :injectionKey="ADMIN_USERS_FILTERS"
         title="User filters"
         :keys="[
           {
