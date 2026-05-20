@@ -8,6 +8,11 @@ export const API_ENDPOINTS = {
     getProfile: '/auth/profile',
     logout: '/auth/logout',
   },
+  products: {
+    getProductSkusFilterOptions: '/product-skus/filters',
+    getProductSkus: '/product-skus',
+    getProductSku: (id: string) => `/product-skus/${id}`,
+  },
   admin: {
     getUsers: '/admin/users',
     toggleBanUser: (id: string) => `/admin/users/${id}`,

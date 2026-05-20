@@ -103,10 +103,6 @@ useBodyClass('drawer-open', isVisible)
   display: none;
 }
 
-.drawer {
-  background-color: red !important;
-}
-
 .container {
   display: flex;
   flex-direction: column;

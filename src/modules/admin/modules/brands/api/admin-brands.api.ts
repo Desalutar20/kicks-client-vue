@@ -8,7 +8,7 @@ import type { GetAdminBrandsInput } from '@/modules/admin/modules/brands/schemas
 import type { UpdateBrandInput } from '@/modules/admin/modules/brands/schemas/update-brand.schema'
 
 export const getAdminBrands = async (query: GetAdminBrandsInput) => {
-  const params = buildQueryParams(query).toString()
+  const params = buildQueryParams(query, ['prevCursor', 'nextCursor']).toString()
   const path = params ? `${API_ENDPOINTS.admin.getBrands}?${params}` : API_ENDPOINTS.admin.getBrands
 
   return await http.get<ApiKeysetResponse<AdminBrand>>(path).json()

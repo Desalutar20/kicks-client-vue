@@ -1,3 +1,4 @@
+import { ROUTE_NAMES } from '@/core/const/router.const'
 import type { ApiSuccessResponse } from '@/core/lib/api.lib'
 import type { AdminProductSku } from '@/core/types/api/admin/admin-product.type'
 import type { MutationOptions } from '@/core/types/tanstack.type'
@@ -21,6 +22,7 @@ import {
 import { useRegleSchema } from '@regle/schemas'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { toast } from 'vue-toastflow'
 
 export const useCreateUpdateProductSku = (
@@ -58,6 +60,7 @@ export const useCreateUpdateProductSku = (
         },
     action.type === 'create' ? createProductSkuSchema : updateProductSkuSchema,
   )
+  const router = useRouter()
 
   const queryClient = useQueryClient()
 
@@ -68,9 +71,28 @@ export const useCreateUpdateProductSku = (
       queryClient.resetQueries({
         queryKey: ADMIN_PRODUCT_SKUS_QUERY_KEYS.all,
       })
-      toast.success('Success')
 
       options?.createOptions?.onSuccess?.(data, params, result, ctx)
+
+      toast.success({
+        title: 'Product SKU created',
+        description: 'You can now open the created product SKU page.',
+        buttons: {
+          alignment: 'bottom-right',
+          buttons: [
+            {
+              id: 'open-product-sku',
+              label: 'Open',
+              onClick: () => {
+                router.push({
+                  name: ROUTE_NAMES.admin.specificProductSku,
+                  params: { id: data.data },
+                })
+              },
+            },
+          ],
+        },
+      })
     },
     onError: (error, params, result, ctx) => {
       setExternalErrors(error, r$)

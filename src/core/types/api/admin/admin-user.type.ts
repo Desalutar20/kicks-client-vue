@@ -1,5 +1,4 @@
 import type { BaseAdminEntity } from '@/core/types/api/admin/base-admin-entity.type'
-import type { UserGender, UserRole } from '@/core/types/api/user.type'
 import type { Nullable } from '@/core/types/util.type'
 
 export type AdminUser = BaseAdminEntity & {
@@ -12,4 +11,15 @@ export type AdminUser = BaseAdminEntity & {
   isBanned: boolean
   googleId: Nullable<string>
   facebookId: Nullable<string>
+}
+
+export enum UserRole {
+  Admin = 'Admin',
+  Regular = 'Regular',
+}
+
+export enum UserGender {
+  Male = 'Male',
+  Female = 'Female',
+  Other = 'Other',
 }

@@ -7,35 +7,35 @@ import twitterIcon from '@/core/assets/icons/twitter.svg'
 </script>
 
 <template>
-  <footer class="footer">
-    <div class="top">
-      <div class="newsletter">
-        <p class="title">Join our KicksPlus Club & get 15% off</p>
+  <footer :class="$style.footer">
+    <div :class="$style.top">
+      <div :class="$style.newsletter">
+        <p :class="$style.title">Join our KicksPlus Club & get 15% off</p>
 
-        <p class="subtitle">Sign up for free! Join the community.</p>
+        <p :class="$style.subtitle">Sign up for free! Join the community.</p>
 
-        <div class="form">
-          <input type="email" placeholder="Email address" class="input" />
-          <button class="button">Submit</button>
-        </div>
+        <form :class="$style.form">
+          <input type="email" placeholder="Email address" :class="$style.input" />
+          <button :class="$style.button">Submit</button>
+        </form>
       </div>
 
-      <img class="logo-top" :src="mediumLogoIcon" alt="Kicks" />
+      <img :class="$style.logoTop" :src="mediumLogoIcon" alt="Kicks" />
     </div>
 
-    <div class="bottom">
-      <div class="content">
-        <div class="block">
-          <span class="heading">About us</span>
-          <p class="text" style="max-width: 370px; line-height: 150%">
+    <div :class="$style.bottom">
+      <div :class="$style.content">
+        <div :class="$style.block">
+          <span :class="$style.heading">About us</span>
+          <p :class="$style.text" style="max-width: 370px; line-height: 150%">
             We are the biggest hyperstore in the universe. We got you all cover with our exclusive
             collections and latest drops.
           </p>
         </div>
 
-        <div class="block">
-          <span class="heading">Categories</span>
-          <ul class="list text">
+        <div :class="$style.block">
+          <span :class="$style.heading">Categories</span>
+          <ul :class="[$style.list, $style.text]">
             <li>Runners</li>
             <li>Sneakers</li>
             <li>Basketball</li>
@@ -45,18 +45,18 @@ import twitterIcon from '@/core/assets/icons/twitter.svg'
           </ul>
         </div>
 
-        <div class="block">
-          <span class="heading">Company</span>
-          <ul class="list text">
+        <div :class="$style.block">
+          <span :class="$style.heading">Company</span>
+          <ul :class="[$style.list, $style.text]">
             <li>About</li>
             <li>Contact</li>
             <li>Blogs</li>
           </ul>
         </div>
 
-        <div class="block">
-          <span class="heading">Company</span>
-          <ul class="social">
+        <div :class="$style.block">
+          <span :class="$style.heading">Company</span>
+          <ul :class="$style.social">
             <li><img :src="facebookIcon" alt="facebook" /></li>
             <li><img :src="instagramIcon" alt="instagram" /></li>
             <li><img :src="twitterIcon" alt="twitter" /></li>
@@ -65,14 +65,14 @@ import twitterIcon from '@/core/assets/icons/twitter.svg'
         </div>
       </div>
 
-      <img class="logo-bottom-desktop" :src="mediumLogoIcon" alt="Kicks" />
+      <img :class="$style.logoBottomDesktop" :src="mediumLogoIcon" alt="Kicks" />
     </div>
 
-    <img class="logo-bottom-mobile" :src="mediumLogoIcon" alt="Kicks" />
+    <img :class="$style.logoBottomMobile" :src="mediumLogoIcon" alt="Kicks" />
   </footer>
 </template>
 
-<style scoped>
+<style module>
 .footer {
   width: 100%;
 }
@@ -110,12 +110,15 @@ import twitterIcon from '@/core/assets/icons/twitter.svg'
 
 .form {
   display: flex;
-  align-items: center;
+  align-items: start;
+  flex-direction: column;
+  width: 100%;
   gap: 4px;
   max-width: 420px;
 }
 
 .input {
+  width: 100%;
   flex: 1;
   padding: 10px 12px;
   border-radius: 8px;
@@ -138,7 +141,7 @@ import twitterIcon from '@/core/assets/icons/twitter.svg'
   cursor: pointer;
 }
 
-.logo-top {
+.logoTop {
   width: 240px;
 }
 
@@ -199,15 +202,21 @@ import twitterIcon from '@/core/assets/icons/twitter.svg'
   height: 24px;
 }
 
-.logo-bottom-desktop {
+.logoBottomDesktop {
   display: none;
 }
 
-.logo-bottom-mobile {
+.logoBottomMobile {
   width: 100%;
   height: 120px;
   object-fit: contain;
   transform: translateY(28px);
+}
+
+@media (min-width: 400px) {
+  .form {
+    flex-direction: row;
+  }
 }
 
 @media (min-width: 768px) {
@@ -246,13 +255,13 @@ import twitterIcon from '@/core/assets/icons/twitter.svg'
     margin-bottom: 100px;
   }
 
-  .logo-bottom-desktop {
+  .logoBottomDesktop {
     display: block;
     width: 100%;
     transform: translateY(96px);
   }
 
-  .logo-bottom-mobile {
+  .logoBottomMobile {
     display: none;
   }
 }
@@ -262,7 +271,7 @@ import twitterIcon from '@/core/assets/icons/twitter.svg'
     padding-right: 184px;
   }
 
-  .logo-bottom-desktop {
+  .logoBottomDesktop {
     transform: translateY(120px);
   }
 }

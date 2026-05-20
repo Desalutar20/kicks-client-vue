@@ -2,7 +2,7 @@ import { GET_ADMIN_USERS_CURSOR_MAX_LENGTH } from './../const/admin-users-schema
 import { GET_ADMIN_USERS_SEARCH_MAX_LENGTH } from '@/modules/admin/modules/users/const/admin-users-schemas.const'
 import z from 'zod'
 import { GET_ADMIN_USERS_MAX_LIMIT } from '../const/admin-users-schemas.const'
-import { UserGender } from '@/core/types/api/user.type'
+import { UserGender } from '@/core/types/api/admin/admin-user.type'
 
 export const getAdminUsersSchema = z
   .object({

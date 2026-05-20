@@ -10,7 +10,7 @@ import type { ProductSkuImageIdInput } from '@/modules/admin/modules/productSkus
 import type { UpdateProductSkuInput } from '@/modules/admin/modules/productSkus/schemas/update-product-sku.schema'
 
 export const getAdminProductSkus = async (query: GetAdminProductSkusInput) => {
-  const params = buildQueryParams(query).toString()
+  const params = buildQueryParams(query, ['prevCursor', 'nextCursor']).toString()
   const path = params
     ? `${API_ENDPOINTS.admin.getProductSkus}?${params}`
     : API_ENDPOINTS.admin.getProductSkus

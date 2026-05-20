@@ -13,7 +13,7 @@ export const useGetAdminProductSku = (
 ) => {
   return useQuery({
     ...options,
-    queryKey: ADMIN_PRODUCT_SKUS_QUERY_KEYS.getAdminProductSku(toValue(id)),
+    queryKey: ADMIN_PRODUCT_SKUS_QUERY_KEYS.getAdminProductSku(id),
     queryFn: () => getAdminProductSku(toValue(id)),
   })
 }

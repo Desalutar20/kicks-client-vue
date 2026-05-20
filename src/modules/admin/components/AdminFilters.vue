@@ -1,25 +1,14 @@
 <script lang="ts" setup generic="TSchema extends ZodObject<ZodRawShape>">
 import { ref, type InjectionKey } from 'vue'
 import { type FiltersInjectionKey, useInjectFilters } from '@/core/composables/use-filters'
-import { type ZodObject, type ZodRawShape, type z } from 'zod'
+import { type ZodObject, type ZodRawShape } from 'zod'
 import { useBodyClass } from '@/core/composables/use-body-class'
-import { Drawer } from 'primevue'
+import { Drawer, Slider } from 'primevue'
 import AppButton from '@/core/components/ui/AppButton.vue'
 import { FilterIcon } from '@lucide/vue'
 import AppInput from '@/core/components/ui/AppInput.vue'
 import AppSelect from '@/core/components/ui/AppSelect.vue'
-
-export type SchemaKeys<T extends ZodObject<ZodRawShape>> = {
-  [K in keyof z.infer<T>]: {
-    key: K
-    label: string
-    placeholder: string
-    type:
-      | { inputType: 'input' }
-      | { inputType: 'select'; options: { value: string; label: string; isDefault?: boolean }[] }
-    transform: (value: string) => z.infer<T>[K]
-  }
-}[keyof z.infer<T>]
+import type { SchemaKeys } from '@/modules/admin/types/admin.types'
 
 const { injectionKey, keys, title } = defineProps<{
   injectionKey: InjectionKey<FiltersInjectionKey<TSchema>>
@@ -44,26 +33,45 @@ useBodyClass('drawer-open', isVisible)
         </span>
 
         <div :class="$style.content">
-          <div v-for="{ key, label, placeholder, type, transform } in keys" :key="key">
-            <div v-if="type.inputType == 'input'" :class="$style.inputContainer">
-              <label :class="$style.label" :for="key.toString()">{{ label }}</label>
+          <div v-for="key in keys" :key="key.label">
+            <div v-if="key.type == 'input'" :class="$style.inputContainer">
+              <label :class="$style.label" :for="key.toString()">{{ key.label }}</label>
               <AppInput
                 :id="key"
-                :placeholder="placeholder"
-                :model-value="lazyFilters[key]"
+                :placeholder="key.placeholder"
+                :model-value="lazyFilters[key.key]"
                 @update:model-value="
-                  (value) => setFilter(key, value?.trim() ? transform(value) : undefined)
+                  (value) => setFilter(key.key, value?.trim() ? key.transform(value) : undefined)
                 "
               />
             </div>
 
-            <div v-if="type.inputType == 'select'" :class="$style.inputContainer">
-              <label :class="$style.label" :for="key.toString()">{{ label }}</label>
+            <div v-if="key.type == 'select'" :class="$style.inputContainer">
+              <label :class="$style.label" :for="key.toString()">{{ key.label }}</label>
               <AppSelect
-                :options="type.options"
-                :placeholder="placeholder"
-                :model-value="lazyFilters[key]"
-                @update:model-value="(value: string) => setFilter(key, transform(value))"
+                :options="key.options"
+                :placeholder="key.placeholder"
+                :model-value="lazyFilters[key.key]"
+                @update:model-value="(value: string) => setFilter(key.key, key.transform(value))"
+              />
+            </div>
+
+            <div v-if="key.type == 'range'" :class="$style.inputContainer">
+              <label :class="$style.label" :for="key.toString()">{{ key.label }}</label>
+              <Slider
+                :modelValue="[lazyFilters[key.keys.min], lazyFilters[key.keys.max]]"
+                @update:model-value="
+                  (value) => {
+                    const transformed = key.transform(value as number[])
+
+                    setFilter(key.keys.min, transformed.min)
+                    setFilter(key.keys.max, transformed.max)
+                  }
+                "
+                :min="key.options.min"
+                :max="key.options.max"
+                :step="key.options.step ?? 1"
+                range
               />
             </div>
           </div>

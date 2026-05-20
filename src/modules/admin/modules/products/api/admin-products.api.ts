@@ -17,7 +17,7 @@ export const getAdminProductFilterOptions = async () => {
 }
 
 export const getAdminProducts = async (query: GetAdminProductsInput) => {
-  const params = buildQueryParams(query).toString()
+  const params = buildQueryParams(query, ['prevCursor', 'nextCursor']).toString()
   const path = params
     ? `${API_ENDPOINTS.admin.getProducts}?${params}`
     : API_ENDPOINTS.admin.getProducts

@@ -25,9 +25,10 @@ export const useDeleteProductSkuImage = (
       const queryKey = ADMIN_PRODUCT_SKUS_QUERY_KEYS.getAdminProductSku(id)
 
       await queryClient.cancelQueries({ queryKey: queryKey })
-      const previousProductSku: AdminProductSku | undefined = queryClient.getQueryData(queryKey)
+      const previousProductSku: ApiSuccessResponse<AdminProductSku> | undefined =
+        queryClient.getQueryData(queryKey)
 
-      if (previousProductSku?.images.length === 0) return
+      if (previousProductSku?.data.images.length === 0) return
 
       queryClient.setQueryData(queryKey, (old: ApiSuccessResponse<AdminProductSku>) => ({
         data: { ...old.data, images: old.data.images.filter((image) => image.id !== imageId) },

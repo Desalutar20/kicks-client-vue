@@ -13,7 +13,7 @@ import TermsText from '@/modules/auth/components/TermsText.vue'
 import Spinner from '@/core/components/ui/Spinner.vue'
 import { ROUTE_NAMES } from '@/core/const/router.const.ts'
 import { type RouteLocationRaw, useRouter } from 'vue-router'
-import { UserRole } from '@/core/types/api/user.type'
+import { UserRole } from '@/core/types/api/admin/admin-user.type'
 
 const { redirectPath } = defineProps<{ redirectPath?: string }>()
 const router = useRouter()

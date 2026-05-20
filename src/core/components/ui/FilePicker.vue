@@ -14,7 +14,6 @@ const { maxFileSize, maxFilesLength } = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'update:modelValue': [value: File[]]
   change: [files: File[]]
 }>()
 

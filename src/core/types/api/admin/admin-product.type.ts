@@ -27,6 +27,12 @@ export type AdminProductFilterOptions = {
   availableBrands: { id: AdminBrand['id']; name: AdminBrand['name'] }[]
 }
 
+export type AdminProductSkuImage = BaseAdminEntity & {
+  imageId: string
+  imageUrl: string
+  imageName: string
+}
+
 export type AdminProductSku = BaseAdminEntity & {
   price: number
   salePrice: Nullable<number>
@@ -36,10 +42,4 @@ export type AdminProductSku = BaseAdminEntity & {
   sku: string
   product: AdminProduct
   images: AdminProductSkuImage[]
-}
-
-export type AdminProductSkuImage = BaseAdminEntity & {
-  imageId: string
-  imageUrl: string
-  imageName: string
 }

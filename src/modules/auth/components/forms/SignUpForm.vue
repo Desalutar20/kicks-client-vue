@@ -8,13 +8,13 @@ import {
   PASSWORD_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
 } from '@/modules/auth/const/auth-schemas.const.ts'
-import { UserGender } from '@/core/types/api/user.type'
 import AppButton from '@/core/components/ui/AppButton.vue'
 import { ArrowRight } from '@lucide/vue'
 import FormInput from '@/core/components/ui/FormInput.vue'
 import { useSignUp } from '@/modules/auth/composables/use-sign-up.ts'
 import TermsText from '@/modules/auth/components/TermsText.vue'
 import Spinner from '@/core/components/ui/Spinner.vue'
+import { UserGender } from '@/core/types/api/admin/admin-user.type'
 
 const {
   r$,

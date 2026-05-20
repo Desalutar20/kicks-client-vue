@@ -4,13 +4,15 @@ import { ROUTE_NAMES } from '@/core/const/router.const.ts'
 import MainLayout from '@/core/layouts/MainLayout.vue'
 import type { ApiSuccessResponse } from '@/core/lib/api.lib.ts'
 import { queryClient } from '@/core/lib/tanstack.lib.ts'
-import { type User, UserRole } from '@/core/types/api/user.type'
+import { type User } from '@/core/types/api/user.type'
 import { authRoutes } from '@/modules/auth/auth.routes.ts'
 import TermsText from '@/modules/auth/components/TermsText.vue'
 import { homeRoutes } from '@/modules/home/home.routes.ts'
 import { profileRoutes } from '@/modules/profile/profile.routes.ts'
-import { adminRoutes } from '@/modules/admin/admin.routes'
+import { adminRoutes } from '@/modules/admin/admin.routes.ts'
 import { getProfile } from '@/modules/auth/api/auth.api'
+import { productsRoutes } from '@/modules/products/products.routes.ts'
+import { UserRole } from '@/core/types/api/admin/admin-user.type'
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +28,10 @@ export const router = createRouter({
         {
           path: '/home',
           children: homeRoutes,
+        },
+        {
+          path: '/products',
+          children: productsRoutes,
         },
         {
           path: '/auth',
@@ -57,7 +63,7 @@ router.beforeResolve(async (to) => {
   let user = cachedData?.data ?? null
   const isAdminRoute = to.path.startsWith('/admin')
 
-  if (!user) {
+  if (!user && !to.path.startsWith('/auth')) {
     try {
       const data = await getProfile()
       user = data.data

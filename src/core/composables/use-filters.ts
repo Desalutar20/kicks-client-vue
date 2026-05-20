@@ -18,7 +18,7 @@ export type FiltersInjectionKey<TSchema extends ZodObject<ZodRawShape>> = {
   resetFilters: () => void
 }
 
-export const useProviderFilters = <TSchema extends ZodObject<ZodRawShape>>(
+export const useProvideFilters = <TSchema extends ZodObject<ZodRawShape>>(
   schema: TSchema,
   routeName: DeepStringValue<typeof ROUTE_NAMES>,
   injectionKey: InjectionKey<FiltersInjectionKey<TSchema>>,
@@ -58,11 +58,23 @@ export const useProviderFilters = <TSchema extends ZodObject<ZodRawShape>>(
 
     lazyFilters[key] = value
 
-    if (isPagination)
+    if (isPagination) {
+      const query = Object.fromEntries(
+        Object.entries(lazyFilters)
+          .filter(
+            ([key, v]) =>
+              (v !== undefined && filters[key] !== undefined) ||
+              key === 'nextCursor' ||
+              key === 'prevCursor',
+          )
+          .map(([k, v]) => [k, String(v)]),
+      )
+
       router.replace({
         name: routeName,
-        query: lazyFilters as Record<string, string>,
+        query,
       })
+    }
   }
 
   const applyFilters = () => {
@@ -70,7 +82,7 @@ export const useProviderFilters = <TSchema extends ZodObject<ZodRawShape>>(
 
     const query = Object.fromEntries(
       Object.entries(lazyFilters)
-        .filter(([, v]) => v !== undefined)
+        .filter(([key, v]) => v !== undefined && key !== 'nextCursor' && key !== 'prevCursor')
         .map(([k, v]) => [k, String(v)]),
     )
 
@@ -93,14 +105,18 @@ export const useProviderFilters = <TSchema extends ZodObject<ZodRawShape>>(
     })
   }
 
-  provide(injectionKey, {
+  const provided = {
     filters,
     lazyFilters,
     isEqual,
     setFilter,
     applyFilters,
     resetFilters,
-  })
+  }
+
+  provide(injectionKey, provided)
+
+  return provided
 }
 
 export const useInjectFilters = <TSchema extends ZodObject<ZodRawShape>>(

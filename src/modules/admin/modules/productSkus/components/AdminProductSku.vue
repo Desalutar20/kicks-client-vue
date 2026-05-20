@@ -72,7 +72,6 @@ const stockLabel = (qty: number) => {
         <span :class="$style.metaLabel">Color</span>
         <div :class="$style.colorWrapper">
           <span :style="{ backgroundColor: productSku.color }" :class="$style.colorDot" />
-          {{ productSku.color }}
         </div>
       </div>
 

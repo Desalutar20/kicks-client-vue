@@ -6,7 +6,7 @@ import {
   PASSWORD_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
 } from '@/modules/auth/const/auth-schemas.const.ts'
-import { UserGender } from '@/core/types/api/user.type'
+import { UserGender } from '@/core/types/api/admin/admin-user.type'
 
 export const signUpSchema = z.object({
   email: z

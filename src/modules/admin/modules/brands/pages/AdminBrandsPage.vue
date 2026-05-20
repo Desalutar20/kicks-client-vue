@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useProviderFilters } from '@/core/composables/use-filters'
+import { useProvideFilters } from '@/core/composables/use-filters'
 import { ROUTE_NAMES } from '@/core/const/router.const'
 import AdminFilters from '@/modules/admin/components/AdminFilters.vue'
 import AdminHeading from '@/modules/admin/components/AdminHeading.vue'
@@ -11,7 +11,7 @@ import AdminBrandsTable from '@/modules/admin/modules/brands/components/AdminBra
 import CreateUpdateBrandForm from '@/modules/admin/modules/brands/components/CreateUpdateBrandForm.vue'
 import AppButton from '@/core/components/ui/AppButton.vue'
 
-useProviderFilters(getAdminBrandsSchema, ROUTE_NAMES.admin.brands, ADMIN_BRANDS_FILTERS)
+useProvideFilters(getAdminBrandsSchema, ROUTE_NAMES.admin.brands, ADMIN_BRANDS_FILTERS)
 </script>
 
 <template>
@@ -33,20 +33,18 @@ useProviderFilters(getAdminBrandsSchema, ROUTE_NAMES.admin.brands, ADMIN_BRANDS_
               key: 'search',
               label: 'Search',
               placeholder: 'Search by name',
-              type: { inputType: 'input' },
+              type: 'input',
               transform: (val) => val,
             },
             {
               key: 'limit',
               label: 'Rows per page',
               placeholder: 'Rows per page',
-              type: {
-                inputType: 'select',
-                options: Array.from(
-                  { length: Math.floor(GET_ADMIN_BRANDS_MAX_LIMIT / 25) },
-                  (_, i) => (i + 1) * 25,
-                ).map((v) => ({ value: v.toString(), label: v.toString() })),
-              },
+              type: 'select',
+              options: Array.from(
+                { length: Math.floor(GET_ADMIN_BRANDS_MAX_LIMIT / 25) },
+                (_, i) => (i + 1) * 25,
+              ).map((v) => ({ value: v.toString(), label: v.toString() })),
               transform: (val) => Number(val),
             },
           ]"

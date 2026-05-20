@@ -6,7 +6,7 @@ import type { GetAdminUsersInput } from '@/modules/admin/modules/users/schemas/g
 import type { UserIdInput } from '@/modules/admin/modules/users/schemas/user-id.schema'
 
 export const getAdminUsers = async (query: GetAdminUsersInput) => {
-  const params = buildQueryParams(query).toString()
+  const params = buildQueryParams(query, ['prevCursor', 'nextCursor']).toString()
   const path = params ? `${API_ENDPOINTS.admin.getUsers}?${params}` : API_ENDPOINTS.admin.getUsers
 
   return await http.get<ApiKeysetResponse<AdminUser>>(path).json()

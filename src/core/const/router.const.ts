@@ -1,5 +1,12 @@
 export const ROUTE_NAMES = {
   home: 'home',
+  shoppingCart: 'cart',
+  profile: 'profile',
+  products: {
+    root: 'products',
+    specificProduct: 'product',
+  },
+
   auth: {
     layout: 'auth-layout',
     signUp: 'sign-up',
@@ -10,14 +17,12 @@ export const ROUTE_NAMES = {
   },
   admin: {
     root: 'admin-root',
-    products: 'products',
-    specificProduct: 'product',
-    productSkus: 'products-skus',
-    specificProductSku: 'productSku',
+    products: 'admin-products',
+    specificProduct: 'admin-product',
+    productSkus: 'admin-products-skus',
+    specificProductSku: 'admin-product-ku',
     users: 'users',
     brands: 'brands',
     categories: 'categories',
   },
-  shoppingCart: 'cart',
-  profile: 'profile',
 } as const

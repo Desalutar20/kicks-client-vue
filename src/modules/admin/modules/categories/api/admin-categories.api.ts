@@ -9,7 +9,7 @@ import type { GetAdminCategoriesInput } from '@/modules/admin/modules/categories
 import type { UpdateCategoryInput } from '@/modules/admin/modules/categories/schemas/update-category.schema'
 
 export const getAdminCategories = async (query: GetAdminCategoriesInput) => {
-  const params = buildQueryParams(query).toString()
+  const params = buildQueryParams(query, ['prevCursor', 'nextCursor']).toString()
   const path = params
     ? `${API_ENDPOINTS.admin.getCategories}?${params}`
     : API_ENDPOINTS.admin.getCategories

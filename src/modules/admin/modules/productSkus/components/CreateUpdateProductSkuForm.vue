@@ -290,31 +290,31 @@ const removeFile = (file: string | AdminProductSkuImage) => {
           "
           :class="$style.imgList"
         >
-          <li
-            v-if="Object.hasOwn(action.data, 'images')"
-            v-for="file in (action.data as AdminProductSku).images"
-            :key="file.id"
-          >
-            <img :src="file.imageUrl" :alt="file.imageName" />
-            <div :class="$style.content">
-              <span>{{
-                file.imageName.length > 100 ? file.imageName.slice(0, 100) + '...' : file.imageName
-              }}</span>
-            </div>
+          <template v-if="Object.hasOwn(action.data, 'images')">
+            <li v-for="file in (action.data as AdminProductSku).images" :key="file.id">
+              <img :src="file.imageUrl" :alt="file.imageName" />
+              <div :class="$style.content">
+                <span>{{
+                  file.imageName.length > 100
+                    ? file.imageName.slice(0, 100) + '...'
+                    : file.imageName
+                }}</span>
+              </div>
 
-            <span :class="$style.circle">
-              <CheckIcon :size="16" />
-            </span>
+              <span :class="$style.circle">
+                <CheckIcon :size="16" />
+              </span>
 
-            <AppButton
-              type="button"
-              @click="removeFile(file)"
-              :class="$style.remove"
-              variant="ghost"
-            >
-              <XIcon :size="18" />
-            </AppButton>
-          </li>
+              <AppButton
+                type="button"
+                @click="removeFile(file)"
+                :class="$style.remove"
+                variant="ghost"
+              >
+                <XIcon :size="18" />
+              </AppButton>
+            </li>
+          </template>
 
           <li v-for="file in filesWithPreview" :key="file.id">
             <img :src="file.url" :alt="file.file.name" />

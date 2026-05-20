@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import { useProviderFilters } from '@/core/composables/use-filters'
+import { useProvideFilters } from '@/core/composables/use-filters'
 import { ROUTE_NAMES } from '@/core/const/router.const'
 import AdminFilters from '@/modules/admin/components/AdminFilters.vue'
 import AdminHeading from '@/modules/admin/components/AdminHeading.vue'
 
 import { ADMIN_USERS_FILTERS } from '@/modules/admin/modules/users/const/admin-users-injection-keys.const'
 import { getAdminUsersSchema } from '@/modules/admin/modules/users/schemas/get-admin-users.schema'
-import { UserGender } from '../../../../../core/types/api/user.type'
 import { GET_ADMIN_USERS_MAX_LIMIT } from '../const/admin-users-schemas.const'
 import AdminUsersWrapper from '@/modules/admin/modules/users/components/AdminUsersWrapper.vue'
+import { UserGender } from '@/core/types/api/admin/admin-user.type'
 
-useProviderFilters(getAdminUsersSchema, ROUTE_NAMES.admin.users, ADMIN_USERS_FILTERS)
+useProvideFilters(getAdminUsersSchema, ROUTE_NAMES.admin.users, ADMIN_USERS_FILTERS)
 </script>
 
 <template>
@@ -25,61 +25,53 @@ useProviderFilters(getAdminUsersSchema, ROUTE_NAMES.admin.users, ADMIN_USERS_FIL
             key: 'search',
             label: 'Search',
             placeholder: 'Search by name or email',
-            type: { inputType: 'input' },
+            type: 'input',
             transform: (val) => val,
           },
           {
             key: 'isVerified',
             label: 'Verified',
             placeholder: 'Verification status',
-            type: {
-              inputType: 'select',
-              options: [
-                { label: 'All', value: 'all' },
-                { label: 'Verified', value: 'true' },
-                { label: 'Not verified', value: 'false' },
-              ],
-            },
+            type: 'select',
+            options: [
+              { label: 'All', value: 'all' },
+              { label: 'Verified', value: 'true' },
+              { label: 'Not verified', value: 'false' },
+            ],
             transform: (val) => (val === 'all' ? undefined : val === 'true'),
           },
           {
             key: 'isBanned',
             label: 'Banned',
             placeholder: 'Ban status',
-            type: {
-              inputType: 'select',
-              options: [
-                { label: 'All', value: 'all' },
-                { label: 'Banned', value: 'true' },
-                { label: 'Not banned', value: 'false' },
-              ],
-            },
+            type: 'select',
+            options: [
+              { label: 'All', value: 'all' },
+              { label: 'Banned', value: 'true' },
+              { label: 'Not banned', value: 'false' },
+            ],
             transform: (val) => (val === 'all' ? undefined : val === 'true'),
           },
           {
             key: 'gender',
             label: 'Gender',
             placeholder: 'Gender',
-            type: {
-              inputType: 'select',
-              options: [
-                { label: 'All', value: 'all' },
-                ...Object.values(UserGender).map((g) => ({ value: g, label: g })),
-              ],
-            },
+            type: 'select',
+            options: [
+              { label: 'All', value: 'all' },
+              ...Object.values(UserGender).map((g) => ({ value: g, label: g })),
+            ],
             transform: (val) => (val === 'all' ? undefined : (val as UserGender)),
           },
           {
             key: 'limit',
             label: 'Rows per page',
             placeholder: 'Rows per page',
-            type: {
-              inputType: 'select',
-              options: Array.from(
-                { length: Math.floor(GET_ADMIN_USERS_MAX_LIMIT / 25) },
-                (_, i) => (i + 1) * 25,
-              ).map((v) => ({ value: v.toString(), label: v.toString() })),
-            },
+            type: 'select',
+            options: Array.from(
+              { length: Math.floor(GET_ADMIN_USERS_MAX_LIMIT / 25) },
+              (_, i) => (i + 1) * 25,
+            ).map((v) => ({ value: v.toString(), label: v.toString() })),
             transform: (val) => Number(val),
           },
         ]"

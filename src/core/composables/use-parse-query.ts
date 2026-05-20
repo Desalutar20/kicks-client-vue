@@ -1,5 +1,5 @@
 import { useRoute } from 'vue-router'
-import { reactive, watch } from 'vue'
+import { reactive, watch, type WatchOptions } from 'vue'
 import { toast } from 'vue-toastflow'
 import type { ZodObject, ZodRawShape } from 'zod'
 import { z } from 'zod'
@@ -10,7 +10,13 @@ export const useParseQuery = <T extends ZodObject<ZodRawShape>>(
     error = 'Invalid query',
     onError,
     onSuccess,
-  }: { error?: string; onError?: () => void; onSuccess?: (data: z.infer<T>) => void },
+    options,
+  }: {
+    error?: string
+    onError?: () => void
+    onSuccess?: (data: z.infer<T>) => void
+    options?: WatchOptions
+  },
 ) => {
   const route = useRoute()
   const parsed: Partial<z.infer<T>> = reactive({})
@@ -35,7 +41,7 @@ export const useParseQuery = <T extends ZodObject<ZodRawShape>>(
 
       Object.assign(parsed, result.data)
     },
-    { immediate: true },
+    { immediate: true, ...options },
   )
 
   return parsed
